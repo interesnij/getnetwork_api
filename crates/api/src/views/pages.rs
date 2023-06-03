@@ -1099,6 +1099,7 @@ pub async fn get_work_page(req: HttpRequest) -> Result<Json<ObjectPageResp>, Err
 pub struct CategoryDetailData {
     pub slug:    Option<String>,
     pub is_ajax: Option<i16>,
+    pub page:    Option<i32>,
 }
 async fn item_category_page (
     req: HttpRequest, 
@@ -1150,18 +1151,27 @@ async fn item_category_page (
         .first::<CatDetail>(&_connection)
         .expect("E");
 
-    let page = get_page(&req);
-    let some_user = get_request_user(&req).await;
-    let device = is_desctop(&req); 
+    let is_ajax: i16;
+    let page:    i32;
+    if params.is_ajax.is_some() && params.is_ajax.unwrap() > 0 {
+        is_ajax = params.is_ajax.unwrap();
+    }
+    else {
+        is_ajax = 0;
+    }
+    if params.page.is_some() && params.page.unwrap() > 1 {
+        page = params.page.unwrap();
+    }
+    else {
+        page = 1;
+    }
 
     let _cats: Vec<Cat>;
     let _tags: Vec<SmallTag>;
     let object_list: Vec<Blog>;
     let next_page_number: i32;
-    
-    let not_ajax = params.is_ajax.is_none() || params.is_ajax.unwrap() == 0;
-    
-    if not_ajax {
+        
+    if is_ajax < 3 {
         let cats_res = block(move || Categories::get_categories_for_types(types)).await?;
         _cats = match cats_res {
             Ok(_ok) => _ok,
@@ -1178,59 +1188,20 @@ async fn item_category_page (
         _tags = Vec::new();
     }
 
-    let all_cats: ();
-    if not_ajax {
-        all_cats = get_categories_2();
-    }
-    else {
-        all_cats = ();
-    }
-
-    if some_user.is_some() {
-        let _request_user = some_user.unwrap();
-        let request_user_data = UserResp {
-            username:   _request_user.username.clone(),
-            image:      _request_user.image.clone(),
-            perm:       _request_user.perm,
-            device:     device,
-            categories: all_cats,
-        };
-        let _res = block(move || Categories::get_blogs_list(_category.id, page, 20, _request_user.perm == 60)).await?;
-        let _dict = match _res {
-            Ok(_ok) => {object_list = _ok.0; next_page_number = _ok.1},
-            Err(_error) => {object_list = Vec::new(); next_page_number = 0},
-        };
-        return CategoryPageResp {
-            request_user:     request_user_data,
-            category:         _category,
-            cats:             _cats,
-            all_tags:         _tags,
-            object_list:      object_list,
-            next_page_number: next_page_number,
-        };
-    }
-    else {
-        let request_user_data = UserResp {
-            username:   "".to_string(),
-            image:      "".to_string(),
-            perm:       0,
-            device:     device,
-            categories: all_cats,
-        };
-        let _res = block(move || Categories::get_blogs_list(_category.id, page, 20, false)).await?;
-        let _dict = match _res {
-            Ok(_ok) => {object_list = _ok.0; next_page_number = _ok.1},
-            Err(_error) => {object_list = Vec::new(); next_page_number = 0},
-        };
-        return Ok(Json(CategoryPageResp {
-            request_user:     request_user_data,
-            category:         _category,
-            cats:             _cats,
-            all_tags:         _tags,
-            object_list:      object_list,
-            next_page_number: next_page_number,
-        }));
-    }
+    let _request_user = get_request_user(&req, is_ajax).await;
+    let _res = block(move || Categories::get_blogs_list(_category.id, page, 20, _request_user.perm == 60)).await?;
+    let _dict = match _res {
+        Ok(_ok) => {object_list = _ok.0; next_page_number = _ok.1},
+        Err(_error) => {object_list = Vec::new(); next_page_number = 0},
+    };
+    return CategoryPageResp {
+        request_user:     _request_user,
+        category:         _category,
+        cats:             _cats,
+        all_tags:         _tags,
+        object_list:      object_list,
+        next_page_number: next_page_number,
+    };
 }
 
 pub async fn blog_category_page(req: HttpRequest) -> Result<Json<CategoryPageResp>, Error> {
@@ -1266,8 +1237,6 @@ async fn item_categories_page (
     use crate::utils::{is_desctop, get_stat_page};
     use crate::schema::stat_pages::dsl::stat_pages;
     use crate::models::StatPage;
-    
-    let params_some = web::Query::<IsAjaxData>::from_query(&req.query_string());
 
     let _connection = establish_connection();
     let _stat = stat_pages
@@ -1277,11 +1246,8 @@ async fn item_categories_page (
 
     let _cats: Vec<Cat>;
     let _tags: Vec<SmallTag>;
-    let request_user_data: UserResp;
-    let is_superuser: bool;
-
-    let some_user = get_request_user(&req).await;
-    let device = is_desctop(&req); 
+    let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
+    let is_superuser = _request_user.perm == 60;
 
     let cats_res = block(move || Categories::get_categories_for_types(types)).await?;
     _cats = match cats_res {
@@ -1294,42 +1260,6 @@ async fn item_categories_page (
         Ok(_list) => _list,
         Err(_error) => Vec::new(),
     };
-
-    let all_cats: ();
-    if params_some.is_ok() {
-        let params = params_some.unwrap();
-        if params.is_ajax.is_none() || params.is_ajax.unwrap() == 0 {
-            all_cats = get_categories_2();
-        }
-        else {
-            all_cats = ();
-        }
-    }
-    else {
-        all_cats = ();
-    }
-
-    if some_user.is_some() {
-        let _request_user = some_user.unwrap();
-        is_superuser = _request_user.perm > 10;
-        request_user_data = UserResp {
-            username:   _request_user.username.clone(),
-            image:      _request_user.image.clone(),
-            perm:       _request_user.perm,
-            device:     device,
-            categories: all_cats,
-        };
-    }
-    else {
-        is_superuser = false;
-        request_user_data = UserResp {
-            username:   "".to_string(),
-            image:      "".to_string(),
-            perm:       0,
-            device:     device,
-            categories: all_cats,
-        };
-    }
 
     let mut categories: Vec<CatDataResp> = Vec::new();
     for cat in _cats.iter() {
@@ -1354,7 +1284,7 @@ async fn item_categories_page (
     }
     
     return Ok(Json( CategoriesPageResp {
-        request_user: request_user_data,
+        request_user: _request_user,
         categories:   categories,
         cats:         _cats,
         all_tags:     _tags,
