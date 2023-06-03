@@ -740,7 +740,7 @@ pub async fn delete_tag(req: HttpRequest, data: Json<DeleteItemData>) -> Result<
 
 
     let _connection = establish_connection();
-    let _tag = tags
+    let _tag = schema::tags::table
         .filter(schema::tags::id.eq(data.id.unwrap()))
         .first::<Tag>(&_connection)
         .expect("E");
@@ -752,8 +752,8 @@ pub async fn delete_tag(req: HttpRequest, data: Json<DeleteItemData>) -> Result<
         return Err(Error::BadRequest(body));
     }
     diesel::delete(
-        tags_items.filter(
-            schema::tags_items::tag_id.eq(_tag_id))
+        schema::tags_items.filter(
+            schema::tags_items::tag_id.eq(_tag.id))
         )
         .execute(&_connection)
         .expect("E");
