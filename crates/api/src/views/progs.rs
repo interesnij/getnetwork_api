@@ -451,7 +451,7 @@ pub async fn create_item(mut payload: Multipart) -> Result<Json<i16>, Error> {
     return Json(1);
 }
 
-pub async fn edit_item(mut payload: Multipart) -> Result<Json<i16>, Error> {
+pub async fn edit_item(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
     use crate::utils::{
         item_form,
         get_price_acc_values,
@@ -1008,7 +1008,7 @@ pub async fn edit_file(req: HttpRequest, mut payload: Multipart) -> Result<Json<
 
     let _connection = establish_connection();
     let _file = schema::files::table
-        .filter(schema::files::id.eq(_file_id))
+        .filter(schema::files::id.eq(form.id))
         .first::<File>(&_connection)
         .expect("E");
 
@@ -1104,7 +1104,7 @@ pub async fn publish_item(req: HttpRequest, data: Json<DeleteItemData>) -> Resul
 
     let id = data.id.unwrap();
     let _connection = establish_connection();
-    let _item = items
+    let _item = schema::items::table
         .filter(schema::items::id.eq(id))
         .first::<Item>(&_connection)
         .expect("E");
@@ -1173,7 +1173,7 @@ pub async fn hide_item(req: HttpRequest, data: Json<DeleteItemData>) -> Result<J
 
     let id = data.id.unwrap();
     let _connection = establish_connection();
-    let _item = items
+    let _item = schema::items::table
         .filter(schema::items::id.eq(id))
         .first::<Item>(&_connection)
         .expect("E");

@@ -20,7 +20,7 @@ use crate::utils::{
 };
 use crate::schema;
 use crate::models::{
-    Tag, SmallTag, NewTag, TagItems,
+    Tag, SmallTag, NewTag, TagItems, StatPage,
     Item, Blog, Service, Store, Wiki, Work, Help,
 };
 use crate::errors::Error;
@@ -598,9 +598,10 @@ pub struct TagsPageResp {
     pub next_page_number: i32,
     pub stat:             StatPage,
 }
-pub async fn tags_page(req: HttpRequest) -> Result<Json<ServePageResp>, Error> {
+pub async fn tags_page(req: HttpRequest) -> Result<Json<TagsPageResp>, Error> {
     let _stat = get_stat_page(1, 0);
-    let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
+    let (is_ajax, page) = get_is_ajax_page(&req);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let (all_tags, next_page_number) = Tag::get_tags_list(page, 20);
 
     return Ok(Json(TagsPageResp {
