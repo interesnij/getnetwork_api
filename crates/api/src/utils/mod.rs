@@ -178,7 +178,14 @@ pub fn get_price_acc_values(price: &i32) -> Option<i32> {
             .expect(&format!("Error connecting to {}", database_url))
     }
 
-    pub fn get_categories_2(is_ajax: i16) -> () {
+    pub fn get_categories_2(is_ajax: i16) -> (
+        Vec<Cat>,
+        Vec<Cat>,
+        Vec<Cat>,
+        Vec<Cat>,
+        Vec<Cat>,
+        Vec<Cat>
+    ) {
         if is_ajax == 0 {
             let _cats = Categories::get_categories().expect("E.");
             let mut _service_cats = Vec::new();

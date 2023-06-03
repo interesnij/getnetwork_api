@@ -388,7 +388,7 @@ pub struct UserHistoryData {
     pub user_id: Option<i32>,
     pub page:    Option<i32>,
 }
-pub async fn get_user_history_page(req: HttpRequest) -> actix_web::Result<UserHistoryResp> {
+pub async fn get_user_history_page(req: HttpRequest) -> Result<Json<UserHistoryResp>, Error> {
     let page = get_page(&req);
     let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.perm < 60 {
