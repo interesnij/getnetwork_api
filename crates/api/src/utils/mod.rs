@@ -215,7 +215,7 @@ pub fn get_price_acc_values(price: &i32) -> Option<i32> {
                 _help_cats
             );
         }
-        return ();
+        return (Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new());
     }
 //}
 
