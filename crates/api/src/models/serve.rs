@@ -182,10 +182,10 @@ pub struct Serve {
     pub is_default:       bool,
     pub user_id:          i32,
     pub tech_cat_id:      i32,
-    pub height:           f64,
-    pub seconds:          i32,
     pub serve_id:         Option<i32>,
     pub view:             i32,
+    pub height:           f64,
+    pub seconds:          i32,
 }
 
 #[derive(Serialize, Queryable)]
@@ -309,10 +309,10 @@ pub struct NewServe {
     pub is_default:       bool,
     pub user_id:          i32,
     pub tech_cat_id:      i32,
-    pub height:           f64,
-    pub seconds:          i32,
     pub serve_id:         Option<i32>,
     pub view:             i32,
+    pub height:           f64,
+    pub seconds:          i32,
 }
 #[derive(Queryable, Serialize, Deserialize, AsChangeset, Debug)]
 #[table_name="serve"]

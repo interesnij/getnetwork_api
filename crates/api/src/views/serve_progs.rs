@@ -823,10 +823,10 @@ pub async fn create_serve(req: HttpRequest, mut payload: Multipart) -> Result<Js
         is_default:       form.is_default,
         user_id:          _request_user.id,
         tech_cat_id:      _category.tech_categories,
-        height:           0.0,
-        seconds:          0,
         serve_id:         form.serve_id,
         view:             0,
+        height:           0.0,
+        seconds:          0,
     };
 
     let _serve = diesel::insert_into(schema::serve::table)
