@@ -67,7 +67,7 @@ pub struct Cat {
     pub slug:  String,
     pub count: i16,
     pub id:    i32,
-    pub image: String,
+    pub image: Option<String>,
     pub types: i16,
 }
 impl Cat {
@@ -1096,7 +1096,7 @@ impl Item {
                 schema::users::image, 
                 schema::users::perm
             ))
-            .load::<OwnerResp>(&_connection);
+            .first::<OwnerResp>(&_connection);
         if user_ok.is_ok() {
             return user_ok.expect("E");
         }
