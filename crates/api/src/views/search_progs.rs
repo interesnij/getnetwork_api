@@ -118,9 +118,9 @@ pub async fn search_page(req: HttpRequest) -> Result<Json<SearchPageResp>, Error
 
 #[derive(Deserialize)]
 struct SearchItemsPageData {
-    pub q:       String,
-    pub page:    i32,
-    pub is_ajax: i16,
+    pub q:       Option<String>,
+    pub page:    Option<i32>,
+    pub is_ajax: Option<i16>,
 }
 fn get_q_page_is_ajax(req: &HttpRequest) -> (String, i32, i16) {
     let params_some = web::Query::<SearchItemsPageData>::from_query(&req.query_string());
