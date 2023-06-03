@@ -732,7 +732,7 @@ impl Categories {
         } else {
             _items = items
                 .filter(schema::items::id.eq_any(ids))
-                .filter(schema::items::types.eq(true))
+                .filter(schema::items::item_types.lt(10))
                 .order(schema::items::created.desc())
                 .limit(limit)
                 .offset(offset)
@@ -816,7 +816,7 @@ impl Categories {
         } else {
             _items = items
                 .filter(schema::items::id.eq_any(ids))
-                .filter(schema::items::types.eq(true))
+                .filter(schema::items::item_types.lt(10))
                 .order(schema::items::created.desc())
                 .limit(limit)
                 .offset(offset)
