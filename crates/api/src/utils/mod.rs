@@ -99,7 +99,7 @@ pub struct OwnerResp {
     pub perm:       i16,
 } 
 
-fn get_request_user_id(req: &HttpRequest) -> i32 {
+async fn get_request_user_id(req: &HttpRequest) -> i32 {
     use actix_web_httpauth::headers::authorization::{Authorization, Bearer};
 
     return match Authorization::<Bearer>::parse(req) {
@@ -113,7 +113,7 @@ fn get_request_user_id(req: &HttpRequest) -> i32 {
         Err(_) => 0,
     };
 }
-pub fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
+pub async fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
     if is_ajax > 0 {
         // не будем получать общие данные, если is_ajax > 0, 
         // так как эти данные уже были получены
@@ -125,7 +125,7 @@ pub fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
             categories: (),
         };
     }
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id > 0 {
         use crate::schema::users::dsl::users;
 

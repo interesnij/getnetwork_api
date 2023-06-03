@@ -918,7 +918,6 @@ pub async fn delete_category(req: HttpRequest, data: Json<DeleteItemData>) -> Re
     return Json(1);
 }
 
-
 pub async fn create_files(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
     let user_id = get_request_user_id(&req);
     if user_id < 1 {

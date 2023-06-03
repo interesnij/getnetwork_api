@@ -5,6 +5,7 @@ extern crate log;
 use std::sync::Arc;
 use actix_cors::Cors;
 use dotenv::dotenv;
+use std::env;
 use env_logger;
 
 pub mod schema;

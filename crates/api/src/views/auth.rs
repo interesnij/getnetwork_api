@@ -153,7 +153,6 @@ pub async fn process_signup (
         Err(Error::BadRequest(body))
     }
     else {
-        let form = signup_form(payload.borrow_mut()).await;
         let _connection = establish_connection();
         let form_user = NewUser {
             first_name: data.first_name.clone(),

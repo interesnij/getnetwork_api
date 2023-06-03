@@ -314,7 +314,7 @@ impl Serve {
     }
 }
 
-#[derive(Insertable,AsChangeset)]
+#[derive(Insertable)]
 #[table_name="serve"]
 pub struct NewServe {
     pub name:             String,
