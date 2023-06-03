@@ -116,7 +116,12 @@ pub async fn get_order_page(req: HttpRequest) -> Result<Json<OrderPageResp>, Err
         }).unwrap();
         return Err(Error::BadRequest(body));
     }
-
+    
+    let _connection = establish_connection();
+    let _order = schema::orders::table
+        .filter(schema::orders::id.eq(params.id.unwrap()))
+        .first::<Order>(&_connection)
+        .expect("E");
     let user_id = get_cookie_user_id(&req).await;
     if user_id != _order.user_id {
         let body = serde_json::to_string(&ErrorParams {
@@ -125,18 +130,13 @@ pub async fn get_order_page(req: HttpRequest) -> Result<Json<OrderPageResp>, Err
         return Err(Error::BadRequest(body));
     }
 
-    let _connection = establish_connection();
-    let _order = orders
-        .filter(schema::orders::id.eq(params.id.unwrap()))
-        .first::<Order>(&_connection)
-        .expect("E");
-    let _files = order_files
+    let _files = schema::order_files::table
         .filter(schema::order_files::order_id.eq(&_order.id))
         .load::<OrderFile>(&_connection)
         .expect("E");
     
     return Ok(Json(OrderPageResp {
-        request_user: _request_user,
+        request_user: get_request_user(&req, get_is_ajax(&req)).await,
         object:       _order,
         files:        _files,
     }));

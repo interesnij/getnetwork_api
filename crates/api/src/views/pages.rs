@@ -8,13 +8,15 @@ use actix_web::{
 };
 use crate::schema;
 use crate::models::{
-    User, Item, Categories, Feedback,
-    Tag, StatPage, Cat, SmallTag, CatDetail,
+    User, Item, Categories, Feedback, CookieUser,
+    Tag, StatPage, Cat, SmallTag, CatDetail, Serve,
     Blog, Service, Store, Wiki, Work, ContentBlock,
+    ServeCategories, TechCategories, CookieStat,
 };
 use crate::utils::{
     establish_connection, get_request_user, is_desctop,
-    get_categories_2, get_stat_page, get_is_ajax_page, get_is_ajax,
+    get_categories_2, get_stat_page, get_is_ajax_page, 
+    get_is_ajax, get_page,
     IsAjaxData, IsAjaxPageData, IndexResponse, ErrorParams, 
     TOKEN, UserResp, PageStatData,  OwnerResp,
 };
