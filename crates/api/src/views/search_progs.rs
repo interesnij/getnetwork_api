@@ -41,8 +41,8 @@ pub async fn empty_search_page(req: HttpRequest) -> Result<Json<EmptySearchResp>
 
 #[derive(Deserialize)]
 pub struct SearchPageData {
-    pub q:       String,
-    pub is_ajax: i16,
+    pub q:       Option<String>,
+    pub is_ajax: Option<i16>,
 }
 #[derive(Serialize)]
 pub struct SearchPageResp {
@@ -59,7 +59,6 @@ pub struct SearchPageResp {
     pub blogs_count:    usize,
     pub stores_count:   usize,
     pub helps_count:    usize,
-    pub is_ajax:        i32,
     pub q:              String,
 }
 pub async fn search_page(req: HttpRequest) -> Result<Json<SearchPageResp>, Error> {
@@ -210,8 +209,8 @@ pub async fn search_blogs_page(req: HttpRequest) -> Result<Json<SearchBlogsResp>
 #[derive(Serialize)]
 pub struct SearchServicesResp {
     pub request_user:     UserResp,
-    pub service_list:     Vec<Service>,
-    pub service_count:    usize,
+    pub services_list:    Vec<Service>,
+    pub services_count:   usize,
     pub q:                String,
     pub next_page_number: i16,
 }
