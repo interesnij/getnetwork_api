@@ -250,7 +250,7 @@ impl Serve {
         return serve
             .filter(schema::serve::serve_id.eq(self.id))
             .filter(schema::serve::is_default.eq(true))
-            .first::<Serve>(&_connection);
+            .first::<Serve>(&_connection)
             .expect("E");
     }
     pub fn is_parent(&self) -> bool {

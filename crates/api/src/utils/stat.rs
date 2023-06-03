@@ -5,7 +5,6 @@ use crate::utils::establish_connection;
 use crate::diesel::{ExpressionMethods, RunQueryDsl, QueryDsl};
 use schema::stat_pages::dsl::stat_pages;
 use crate::models::{StatPage, NewStatPage};
-use crate::websocket::{MessageToClient, Server};
 use actix_web::web::Data;
 
 

@@ -21,6 +21,10 @@ use crate::models::{
     User,
     Cat,
     SmallTag,
+    SmallFile,
+    Tag,
+    TechCategories,
+    FeaturedItem,
 };
 use crate::diesel::{
     Connection,
@@ -28,14 +32,6 @@ use crate::diesel::{
     RunQueryDsl,
     ExpressionMethods,
     QueryDsl,
-};
-use crate::models::{
-    SmallFile,
-    Tag,
-    TechCategories,
-    Categories,
-    Cat,
-    FeaturedItem,
 };
 
 pub static TOKEN: &str = "111";

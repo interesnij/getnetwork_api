@@ -16,7 +16,7 @@ use crate::diesel::{
 use crate::utils::{
     establish_connection,
     get_request_user, get_stat_page,
-    ErrorParams, TOKEN, UserResp, ObjectPageResp,
+    ErrorParams, TOKEN, UserResp,
 };
 use crate::schema;
 use crate::models::{
@@ -60,7 +60,7 @@ pub async fn create_tag_page(req: HttpRequest) -> Result<Json<CreateTagPageResp>
     }
 
     let _connection = establish_connection();
-    let all_tags = tags::tags:table
+    let all_tags = schema::tags:table
         .load::<Tag>(&_connection)
         .expect("Error.");
     
@@ -185,7 +185,7 @@ pub async fn tag_page(req: HttpRequest) -> Result<Json<TagPageResp>, Error> {
     };
 
     return Ok(Json(TagPageResp {
-        request_user:   _request_user
+        request_user:   _request_user,
         tag:            _tag,
         works_list:     Item::get_works_for_ids(3, 0, &work_stack, is_admin),
         services_list:  Item::get_services_for_ids(3, 0, &service_stack, is_admin),
