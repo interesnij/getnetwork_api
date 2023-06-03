@@ -56,7 +56,7 @@ pub async fn login (
 ) -> Result<Json<UserResp>, Error> {
     let _user = User::get_user_by_name(&data.username);
     
-    if get_request_user_id(&req) != 0 {
+    if get_request_user_id(&req).await != 0 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
         }).unwrap();

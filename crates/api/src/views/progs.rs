@@ -320,7 +320,7 @@ pub async fn create_feedback(conn: ConnectionInfo, mut payload: actix_multipart:
 
 
 pub async fn create_item(mut payload: Multipart) -> Result<Json<i16>, Error> {
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -456,7 +456,7 @@ pub async fn edit_item(mut payload: Multipart) -> Result<Json<i16>, Error> {
         get_price_acc_values,
     };
 
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -686,7 +686,7 @@ pub async fn edit_item(mut payload: Multipart) -> Result<Json<i16>, Error> {
 pub async fn create_category(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
     use crate::utils::category_form;
 
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -727,7 +727,7 @@ pub async fn create_category(req: HttpRequest, mut payload: Multipart) -> Result
 pub async fn edit_category(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
     use crate::utils::category_form;
 
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -778,7 +778,7 @@ pub struct DeleteItemData {
     pub token: Option<String>,
 }
 pub async fn delete_item(req: HttpRequest, data: Json<DeleteItemData>) -> Result<Json<i16>, Error> {
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -875,7 +875,7 @@ pub async fn delete_item(req: HttpRequest, data: Json<DeleteItemData>) -> Result
 
 
 pub async fn delete_category(req: HttpRequest, data: Json<DeleteItemData>) -> Result<Json<i16>, Error> {
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -919,7 +919,7 @@ pub async fn delete_category(req: HttpRequest, data: Json<DeleteItemData>) -> Re
 }
 
 pub async fn create_files(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -980,7 +980,7 @@ pub async fn create_files(req: HttpRequest, mut payload: Multipart) -> Result<Js
 }
 
 pub async fn edit_file(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -1029,7 +1029,7 @@ pub async fn edit_file(req: HttpRequest, mut payload: Multipart) -> Result<Json<
 }
 
 pub async fn delete_file(req: HttpRequest, data: Json<DeleteItemData>) -> Result<Json<i16>, Error> {
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -1078,7 +1078,7 @@ pub async fn delete_file(req: HttpRequest, data: Json<DeleteItemData>) -> Result
 }
 
 pub async fn publish_item(req: HttpRequest, data: Json<DeleteItemData>) -> Result<Json<i16>, Error> {
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -1147,7 +1147,7 @@ pub async fn publish_item(req: HttpRequest, data: Json<DeleteItemData>) -> Resul
 }
 
 pub async fn hide_item(req: HttpRequest, data: Json<DeleteItemData>) -> Result<Json<i16>, Error> {
-    let user_id = get_request_user_id(&req);
+    let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),

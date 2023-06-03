@@ -91,7 +91,7 @@ pub async fn index_page(req: HttpRequest) -> Result<Json<IndexPageResp>, Error> 
 
     let _stat = get_stat_page(1, 0); 
  
-    let _request_user = get_request_user(&req, get_is_ajax(&req));
+    let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
     let is_superuser = _request_user.perm > 59;
 
     return Ok(Json(IndexPageResp {
@@ -128,7 +128,7 @@ pub async fn info_page(req: HttpRequest) -> Result<Json<AboutPageResp>, Error> {
         Err(_error) => Vec::new(),
     };
     return Ok(Json(AboutPageResp {
-        request_user: get_request_user(&req, get_is_ajax(&req)),
+        request_user: get_request_user(&req, get_is_ajax(&req)).await,
         help_cats:    _help_cats,
         view:         _stat.view,
         height:       _stat.height, 
@@ -167,7 +167,7 @@ pub async fn history_page(req: HttpRequest) -> Result<Json<HistoryPageResp>, Err
     };
 
     return Ok(Json(HistoryPageResp {
-        request_user:     get_request_user(&req, is_ajax),
+        request_user:     get_request_user(&req, is_ajax).await,
         object_list:      object_list,
         next_page_number: next_page_number,
     }));
@@ -181,7 +181,7 @@ pub struct FeedbackListResp {
 }
 pub async fn feedback_list_page(req: HttpRequest) -> Result<Json<FeedbackListResp>, Error> {
     let (is_ajax, page) = get_is_ajax_page(&req);
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.perm > 59 {
         use crate::utils::get_is_ajax_page;
 
@@ -224,7 +224,7 @@ pub async fn serve_list_page(req: HttpRequest) -> Result<Json<ServeListResp>, Er
         .expect("E.");
 
     return Ok(Json(ServeListResp {
-        request_user: get_request_user(&req, get_is_ajax(&req)),
+        request_user: get_request_user(&req, get_is_ajax(&req)).await,
         tech_cats:    tech_cats,
     }));
 }
@@ -266,7 +266,7 @@ pub async fn get_tech_category_page(req: HttpRequest) -> Result<Json<TechCategor
         .expect("E."); 
 
     return Ok(Json(TechCategoryResp {
-        request_user: get_request_user(&req, 2),
+        request_user: get_request_user(&req, 2).await,
         object:       tech_category,
     }));
 }
@@ -308,7 +308,7 @@ pub async fn get_serve_category_page(req: HttpRequest) -> Result<Json<ServeCateg
         .expect("E."); 
 
     return Ok(Json(ServeCategoryResp {
-        request_user: get_request_user(&req, 2),
+        request_user: get_request_user(&req, 2).await,
         object:       serve_category,
     }));
 }
@@ -350,7 +350,7 @@ pub async fn get_serve_page(req: HttpRequest) -> Result<Json<ServeResp>, Error> 
         .expect("E."); 
 
     return Ok(Json(ServeResp {
-        request_user: get_request_user(&req, 2),
+        request_user: get_request_user(&req, 2).await,
         object:       serve,
     }));
 }
@@ -371,7 +371,7 @@ pub async fn cookie_users_list_page(req: HttpRequest) -> Result<Json<CookieUsers
     let (object_list, next_page_number) = CookieUser::get_users_list(page, 20);
     
     return Ok(Json(CookieUsersResp {
-        request_user:     get_request_user(&req, is_ajax),
+        request_user:     get_request_user(&req, is_ajax).await,
         object_list:      object_list,
         next_page_number: next_page_number,
     }));
@@ -390,7 +390,7 @@ pub struct UserHistoryData {
 }
 pub async fn get_user_history_page(req: HttpRequest) -> actix_web::Result<UserHistoryResp> {
     let page = get_page(&req);
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.perm < 60 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permisson Denied!".to_string(),
@@ -461,7 +461,7 @@ pub async fn get_tech_objects_page(req: HttpRequest) -> Result<Json<TechObjectsR
     use crate::models::TechCategories;
     use crate::schema::tech_categories::dsl::tech_categories;
 
-    let _request_user = get_request_user(&req, 2);
+    let _request_user = get_request_user(&req, 2).await;
     let _connection = establish_connection();
     let _cat = tech_categories
         .filter(schema::tech_categories::id.eq(params.id.unwrap()))
@@ -486,7 +486,7 @@ pub struct UnicalObjectFormData {
     pub types: Option<i16>,
 }
 pub async fn unical_object_form_page(req: HttpRequest) -> Result<Json<UnicalObjectFormResp>, Error> {
-    let _request_user = get_request_user(&req, 2);
+    let _request_user = get_request_user(&req, 2).await;
     if _request_user.perm < 60 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -531,7 +531,7 @@ pub struct CreateCategoryResp {
     pub cats:         Vec<Cat>,
 }
 pub async fn create_category_page(req: HttpRequest) -> Result<Json<CreateCategoryResp>, Error> {
-    let _request_user = get_request_user(&req, get_is_ajax(&req));
+    let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
     if _request_user.perm < 60 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -587,7 +587,7 @@ pub async fn edit_category_page(req: HttpRequest) -> Result<Json<EditCategoryRes
         is_ajax = 0;
     }
     
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.perm < 60 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -618,7 +618,7 @@ pub struct CreateItemResp {
 }
 pub async fn create_item_page(req: HttpRequest) -> Result<Json<CreateItemResp>, Error> {
     let is_ajax = get_is_ajax(&req);
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.perm < 60 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -673,7 +673,7 @@ pub async fn edit_item_page(req: HttpRequest) -> Result<Json<EditItemResp>, Erro
         is_ajax = 0;
     }
 
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.perm < 60 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -732,7 +732,7 @@ pub async fn edit_file_page(req: HttpRequest) -> Result<Json<EditFileResp>, Erro
         is_ajax = 0;
     }
 
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.perm < 60 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -1060,7 +1060,7 @@ async fn get_item_page (
     };
 
     return Json(ObjectPageResp {
-        request_user: get_request_user(&req, is_ajax),
+        request_user: get_request_user(&req, is_ajax).await,
         object:       get_item_data(_item, _request_user.perm),
         category:     cat_data,
         cats:         _cats,
@@ -1151,7 +1151,7 @@ async fn item_category_page (
         .expect("E");
 
     let page = get_page(&req);
-    let some_user = get_request_user(&req);
+    let some_user = get_request_user(&req).await;
     let device = is_desctop(&req); 
 
     let _cats: Vec<Cat>;
@@ -1280,7 +1280,7 @@ async fn item_categories_page (
     let request_user_data: UserResp;
     let is_superuser: bool;
 
-    let some_user = get_request_user(&req);
+    let some_user = get_request_user(&req).await;
     let device = is_desctop(&req); 
 
     let cats_res = block(move || Categories::get_categories_for_types(types)).await?;

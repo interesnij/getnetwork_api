@@ -49,7 +49,7 @@ pub async fn get_orders_page(req: HttpRequest) -> Result<Json<OrdersPageResp>, E
     use crate::utils::get_is_ajax_page;
 
     let (is_ajax, page) = get_is_ajax_page(&req);
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -69,7 +69,7 @@ pub async fn get_user_orders_page(req: HttpRequest) -> Result<Json<OrdersPageRes
     use crate::utils::get_is_ajax_page;
 
     let (is_ajax, page) = get_is_ajax_page(&req);
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let user_id = get_cookie_user_id(&req).await;
     if user_id == 0 {
         let body = serde_json::to_string(&ErrorParams {

@@ -1,3 +1,4 @@
+use crate::schema;
 use crate::schema::feedbacks;
 use diesel::{Queryable, Insertable};
 use serde::{Serialize, Deserialize};

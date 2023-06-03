@@ -30,8 +30,6 @@ mod utils;
 #[macro_use]
 mod views;
 
-use crate::views::not_found;
-
 #[derive(Clone)]
 pub struct AppState {
     key: Arc<String>,
@@ -51,7 +49,6 @@ async fn main() -> std::io::Result<()> {
             .wrap(Compress::default())
             .app_data(web::Data::new(app_state.to_owned()))
             .app_data(web::JsonConfig::default().limit(4096))
-            .default_service(web::route().to(not_found))
             .service(_files)
             .configure(routes)
     })

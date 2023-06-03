@@ -33,7 +33,7 @@ pub struct EmptySearchResp {
 }
 pub async fn empty_search_page(req: HttpRequest) -> Result<Json<EmptySearchResp>, Error> {
     return Ok(Json(EmptySearchResp {
-        request_user: get_request_user(&req, get_is_ajax(&req)),
+        request_user: get_request_user(&req, get_is_ajax(&req)).await,
     }));
 }
 
@@ -86,7 +86,7 @@ pub async fn search_page(req: HttpRequest) -> Result<Json<SearchPageResp>, Error
         is_ajax = 0;
     }
 
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let _q = params.q.as_deref().unwrap().to_string();
     let _q_standalone = "%".to_owned() + &_q + "%";
     let is_admin = _request_user.perm > 59; 
@@ -167,7 +167,7 @@ pub struct SearchBlogsResp {
 }
 pub async fn search_blogs_page(req: HttpRequest) -> Result<Json<SearchBlogsResp>, Error> {
     let (q, page, is_ajax) = get_q_page_is_ajax(&req);
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if q.is_empty() {
         return Ok(Json(SearchBlogsResp {
             request_user:     _request_user,
@@ -216,7 +216,7 @@ pub struct SearchServicesResp {
 }
 pub async fn search_services_page(req: HttpRequest) -> Result<Json<SearchServicesResp>, Error> {
     let (q, page, is_ajax) = get_q_page_is_ajax(&req);
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if q.is_empty() {
         return Ok(Json(SearchServicesResp {
             request_user:     _request_user,
@@ -265,7 +265,7 @@ pub struct SearchStoresResp {
 }
 pub async fn search_stores_page(req: HttpRequest) -> Result<Json<SearchStoresResp>, Error> {
     let (q, page, is_ajax) = get_q_page_is_ajax(&req);
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if q.is_empty() {
         return Ok(Json(SearchStoresResp {
             request_user:     _request_user,
@@ -314,7 +314,7 @@ pub struct SearchWikisResp {
 }
 pub async fn search_wikis_page(req: HttpRequest) -> Result<Json<SearchWikisResp>, Error> {
     let (q, page, is_ajax) = get_q_page_is_ajax(&req);
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if q.is_empty() {
         return Ok(Json(SearchWikisResp {
             request_user:     _request_user,
@@ -363,7 +363,7 @@ pub struct SearchWorksResp {
 }
 pub async fn search_works_page(req: HttpRequest) -> Result<Json<SearchWorksResp>, Error> {
     let (q, page, is_ajax) = get_q_page_is_ajax(&req);
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if q.is_empty() {
         return Ok(Json(SearchWorksResp {
             request_user:     _request_user,
@@ -412,7 +412,7 @@ pub struct SearchHelpsResp {
 }
 pub async fn search_helps_page(req: HttpRequest) -> Result<Json<SearchHelpsResp>, Error> {
     let (q, page, is_ajax) = get_q_page_is_ajax(&req);
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if q.is_empty() {
         return Ok(Json(SearchHelpsResp {
             request_user:     _request_user,

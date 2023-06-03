@@ -51,7 +51,7 @@ pub struct CreateTagPageResp {
     pub all_tags:     Vec<Tag>,
 }
 pub async fn create_tag_page(req: HttpRequest) -> Result<Json<CreateTagPageResp>, Error> {
-    let _request_user = get_request_user(&req, get_is_ajax(&req));
+    let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
     if _request_user.id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -72,7 +72,7 @@ pub async fn create_tag_page(req: HttpRequest) -> Result<Json<CreateTagPageResp>
 
 
 pub async fn create_tag(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
-    let _request_user = get_request_user(&req, 3);
+    let _request_user = get_request_user(&req, 3).await;
     let user_id = _request_user.id;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
@@ -155,7 +155,7 @@ pub async fn tag_page(req: HttpRequest) -> Result<Json<TagPageResp>, Error> {
     }
 
     let _connection = establish_connection();
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let is_admin = _request_user.perm == 60;
     let _tag = schema::tags::table
         .filter(schema::tags::name.eq(params.slug.unwrap()))
@@ -243,7 +243,7 @@ pub async fn tag_blogs_page(req: HttpRequest) -> Result<Json<TagBlogsPageResp>, 
     }
 
     let _connection = establish_connection();
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
         .filter(schema::tags::name.eq(params.slug.unwrap()))
         .first::<Tag>(&_connection)
@@ -259,7 +259,7 @@ pub async fn tag_blogs_page(req: HttpRequest) -> Result<Json<TagBlogsPageResp>, 
     let blogs_count = _tag_items.len();
 
     return Ok(Json(TagBlogsPageResp {
-        request_user:     _request_user
+        request_user:     _request_user,
         tag:              _tag,
         blogs_list:       _blogs,
         blogs_count:      _tag_items.len(),
@@ -307,7 +307,7 @@ pub async fn tag_services_page(req: HttpRequest) -> Result<Json<TagServicesPageR
     }
 
     let _connection = establish_connection();
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
         .filter(schema::tags::name.eq(params.slug.unwrap()))
         .first::<Tag>(&_connection)
@@ -323,7 +323,7 @@ pub async fn tag_services_page(req: HttpRequest) -> Result<Json<TagServicesPageR
     let services_count = _tag_items.len();
 
     return Ok(Json(TagServicesPageResp {
-        request_user:     _request_user
+        request_user:     _request_user,
         tag:              _tag,
         services_list:    _services,
         services_count:   _tag_items.len(),
@@ -371,7 +371,7 @@ pub async fn tag_stores_page(req: HttpRequest) -> Result<Json<TagStoresPageResp>
     }
 
     let _connection = establish_connection();
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
         .filter(schema::tags::name.eq(params.slug.unwrap()))
         .first::<Tag>(&_connection)
@@ -387,7 +387,7 @@ pub async fn tag_stores_page(req: HttpRequest) -> Result<Json<TagStoresPageResp>
     let stores_count = _tag_items.len();
 
     return Ok(Json(TagStoresPageResp {
-        request_user:     _request_user
+        request_user:     _request_user,
         tag:              _tag,
         stores_list:      _stores,
         stores_count:     _tag_items.len(),
@@ -435,7 +435,7 @@ pub async fn tag_wikis_page(req: HttpRequest) -> Result<Json<TagWikisPageResp>, 
     }
 
     let _connection = establish_connection();
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
         .filter(schema::tags::name.eq(params.slug.unwrap()))
         .first::<Tag>(&_connection)
@@ -451,7 +451,7 @@ pub async fn tag_wikis_page(req: HttpRequest) -> Result<Json<TagWikisPageResp>, 
     let wikis_count = _tag_items.len();
 
     return Ok(Json(TagWikisPageResp {
-        request_user:     _request_user
+        request_user:     _request_user,
         tag:              _tag,
         wikis_list:       _wikis,
         wikis_count:      _tag_items.len(),
@@ -499,7 +499,7 @@ pub async fn tag_works_page(req: HttpRequest) -> Result<Json<TagWorksPageResp>, 
     }
 
     let _connection = establish_connection();
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
         .filter(schema::tags::name.eq(params.slug.unwrap()))
         .first::<Tag>(&_connection)
@@ -515,7 +515,7 @@ pub async fn tag_works_page(req: HttpRequest) -> Result<Json<TagWorksPageResp>, 
     let works_count = _tag_items.len();
 
     return Ok(Json(TagWorksPageResp {
-        request_user:     _request_user
+        request_user:     _request_user,
         tag:              _tag,
         works_list:       _works,
         works_count:      _tag_items.len(),
@@ -563,7 +563,7 @@ pub async fn tag_helps_page(req: HttpRequest) -> Result<Json<TagHelpsPageResp>, 
     }
 
     let _connection = establish_connection();
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
         .filter(schema::tags::name.eq(params.slug.unwrap()))
         .first::<Tag>(&_connection)
@@ -579,7 +579,7 @@ pub async fn tag_helps_page(req: HttpRequest) -> Result<Json<TagHelpsPageResp>, 
     let helps_count = _tag_items.len();
 
     return Ok(Json(TagHelpsPageResp {
-        request_user:     _request_user
+        request_user:     _request_user,
         tag:              _tag,
         helps_list:       _helps,
         helps_count:      _tag_items.len(),
@@ -598,7 +598,7 @@ pub struct TagsPageResp {
 }
 pub async fn tags_page(req: HttpRequest) -> Result<Json<ServePageResp>, Error> {
     let _stat = get_stat_page(1, 0);
-    let _request_user = get_request_user(&req, get_is_ajax(&req));
+    let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
     let (all_tags, next_page_number) = Tag::get_tags_list(page, 20);
 
     return Ok(Json(TagsPageResp {
@@ -645,7 +645,7 @@ pub async fn edit_tag_page(req: HttpRequest) -> Result<Json<EditTagResp>, Error>
         is_ajax = 0;
     }
     
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let _connection = establish_connection();
     let _tag = tags
         .filter(schema::tags::id.eq(&_tag_id))
@@ -666,7 +666,7 @@ pub async fn edit_tag_page(req: HttpRequest) -> Result<Json<EditTagResp>, Error>
 
 
 pub async fn edit_tag(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -715,7 +715,7 @@ pub struct DeleteItemData {
     pub id:    Option<i32>,
 }
 pub async fn delete_tag(req: HttpRequest, data: Json<DeleteItemData>) -> Result<Json<i16>, Error> {
-    let _request_user = get_request_user(&req, 3);
+    let _request_user = get_request_user(&req, 3).await;
     if _request_user.id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),

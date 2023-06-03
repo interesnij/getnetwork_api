@@ -85,7 +85,7 @@ pub async fn serve_categories_page(req: HttpRequest) -> Result<Json<ServeCategor
         .expect("E");
 
     return Ok(Json(ServeCategoriesPageResp {
-        request_user:  get_request_user(&req, get_is_ajax(&req)),
+        request_user:  get_request_user(&req, get_is_ajax(&req)).await,
         serve_cats:    _serve_cats,
         view:          _stat.view,
         height:        _stat.height, 
@@ -142,7 +142,7 @@ pub async fn get_serve_page(req: HttpRequest) -> Result<Json<ServePageResp>, Err
         .expect("E");
 
     return Ok(Json(ServePageResp {
-        request_user: get_request_user(&req, is_ajax),
+        request_user: get_request_user(&req, is_ajax).await,
         category:     _s_category,
         object:       _serve,
         view:         _stat.view, 
@@ -157,7 +157,7 @@ pub struct CreateTechCategoriesResp {
     pub cats:         Vec<Cat>,
 }
 pub async fn create_tech_categories_page(req: HttpRequest) -> Result<Json<CreateTechCategoriesResp>, Error> {
-    let _request_user = get_request_user(&req, get_is_ajax(&req));
+    let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
     if _request_user.username.is_empty() {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -182,7 +182,7 @@ pub struct CreateServeCategoriesResp {
     pub tech_cats:    Vec<TechCategories>,
 }
 pub async fn create_serve_categories_page(req: HttpRequest) -> Result<Json<CreateServeCategoriesResp>, Error> {
-    let _request_user = get_request_user(&req, get_is_ajax(&req));
+    let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
     if _request_user.username.is_empty() {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -271,7 +271,7 @@ pub struct CreateServeCategoryResp {
     pub tech_cats:    Vec<TechCategories>,
 }
 pub async fn create_serve_page(req: HttpRequest) -> Result<Json<CreateServeCategoryResp>, Error> {
-    let _request_user = get_request_user(&req, get_is_ajax(&req));
+    let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
     if _request_user.username.is_empty() {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -326,7 +326,7 @@ pub async fn edit_tech_category_page(req: HttpRequest) -> Result<Json<CreateServ
     else {
         is_ajax = 0;
     }
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let _connection = establish_connection();
 
     let _tech_categories = tech_categories
@@ -382,7 +382,7 @@ pub async fn edit_serve_category_page(req: HttpRequest) -> Result<Json<CreateSer
     else {
         is_ajax = 0;
     }
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let _connection = establish_connection();
 
     let _tech_categories = tech_categories
@@ -440,7 +440,7 @@ pub async fn edit_serve_page(req: HttpRequest) -> Result<Json<CreateServeCategor
     else {
         is_ajax = 0;
     }
-    let _request_user = get_request_user(&req, is_ajax);
+    let _request_user = get_request_user(&req, is_ajax).await;
     let _connection = establish_connection();
 
     let _serve = serve
@@ -480,7 +480,7 @@ pub async fn edit_serve_page(req: HttpRequest) -> Result<Json<CreateServeCategor
 pub async fn create_tech_categories(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
     use crate::utils::category_form;
 
-    let _request_user = get_request_user(&req, 3);
+    let _request_user = get_request_user(&req, 3).await;
     let user_id = _request_user.id;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
@@ -522,7 +522,7 @@ pub async fn create_tech_categories(req: HttpRequest, mut payload: Multipart) ->
 pub async fn create_serve_categories(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
     use crate::utils::category_form;
     
-    let _request_user = get_request_user(&req, 3);
+    let _request_user = get_request_user(&req, 3).await;
     let user_id = _request_user.id;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
@@ -564,7 +564,7 @@ pub async fn create_serve_categories(req: HttpRequest, mut payload: Multipart) -
 pub async fn edit_tech_category(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
     use crate::utils::category_form;
 
-    let _request_user = get_request_user(&req, 3);
+    let _request_user = get_request_user(&req, 3).await;
     let user_id = _request_user.id;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
@@ -617,7 +617,7 @@ pub async fn edit_tech_category(req: HttpRequest, mut payload: Multipart) -> Res
 pub async fn edit_serve_category(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
     use crate::utils::serve_category_form;
 
-    let _request_user = get_request_user(&req, 3);
+    let _request_user = get_request_user(&req, 3).await;
     let user_id = _request_user.id;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
@@ -783,7 +783,7 @@ pub async fn create_serve(req: HttpRequest, mut payload: Multipart) -> Result<Js
     use crate::utils::serve_category_form;
     use crate::schema::serve_categories::dsl::serve_categories;
 
-    let _request_user = get_request_user(&req, 3);
+    let _request_user = get_request_user(&req, 3).await;
     let user_id = _request_user.id;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
@@ -849,7 +849,7 @@ pub async fn create_serve(req: HttpRequest, mut payload: Multipart) -> Result<Js
 }
 
 pub async fn edit_serve(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
-    let _request_user = get_request_user(&req, 3);
+    let _request_user = get_request_user(&req, 3).await;
     let user_id = _request_user.id;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
@@ -938,7 +938,7 @@ pub struct DeleteServeData {
     pub id:    Option<i32>,
 }
 pub async fn delete_serve(req: HttpRequest, data: Json<DeleteServeData>) -> Result<Json<i16>, Error> {
-    let _request_user = get_request_user(&req, 3);
+    let _request_user = get_request_user(&req, 3).await;
     let user_id = _request_user.id;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
@@ -997,7 +997,7 @@ pub async fn delete_serve(req: HttpRequest, data: Json<DeleteServeData>) -> Resu
 }
 
 pub async fn delete_tech_category(req: HttpRequest, data: Json<DeleteServeData>) -> Result<Json<i16>, Error> {
-    let _request_user = get_request_user(&req, 3);
+    let _request_user = get_request_user(&req, 3).await;
     let user_id = _request_user.id;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
@@ -1037,7 +1037,7 @@ pub async fn delete_tech_category(req: HttpRequest, data: Json<DeleteServeData>)
 }
 
 pub async fn delete_serve_category(req: HttpRequest, data: Json<DeleteServeData>) -> Result<Json<i16>, Error> {
-    let _request_user = get_request_user(&req, 3);
+    let _request_user = get_request_user(&req, 3).await;
     let user_id = _request_user.id;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
