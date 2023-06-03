@@ -127,7 +127,7 @@ pub fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
     }
     let user_id = get_request_user_id(&req);
     if user_id > 0 {
-        use crate::schema:users::dsl::users;
+        use crate::schema::users::dsl::users;
 
         let user = users
             .filter(schema::users::id.eq(user_id))

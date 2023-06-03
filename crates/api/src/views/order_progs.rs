@@ -116,7 +116,7 @@ pub async fn get_order_page(req: HttpRequest) -> Result<Json<OrderPageResp>, Err
     }
 
     let user_id = get_cookie_user_id(&req).await;
-    else if user_id != _order.user_id {
+    if user_id != _order.user_id {
         let body = serde_json::to_string(&ErrorParams {
             error: "Информация о заказчике не найдена".to_string(),
         }).unwrap();

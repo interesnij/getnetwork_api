@@ -167,7 +167,7 @@ pub async fn history_page(req: HttpRequest) -> Result<Json<HistoryPageResp>, Err
     };
 
     return Ok(Json(HistoryPageResp {
-        request_user:     get_request_user(&req, is_ajax);,
+        request_user:     get_request_user(&req, is_ajax),
         object_list:      object_list,
         next_page_number: next_page_number,
     }));

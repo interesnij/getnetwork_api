@@ -911,7 +911,7 @@ pub async fn delete_category(req: HttpRequest, data: Json<DeleteItemData>) -> Re
         return Err(Error::BadRequest(body));
     }
 
-    diesel::delete(&_item))
+    diesel::delete(&_item)
         .execute(&_connection)
         .expect("E");
     
