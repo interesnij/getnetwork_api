@@ -8,14 +8,15 @@ use actix_web::{
 };
 use crate::schema;
 use crate::models::{
-    User, Item, Categories,
+    User, Item, Categories, Feedback,
     Tag, StatPage, Cat, SmallTag,
+    Blog, Service, Store, Wiki, Work,
 };
 use crate::utils::{
     establish_connection, get_request_user, is_desctop,
-    get_categories_2, get_stat_page, 
+    get_categories_2, get_stat_page, get_is_ajax_page,
     IsAjaxData, IsAjaxPageData, IndexResponse, ErrorParams, 
-    TOKEN, UserResp, PageStatData,
+    TOKEN, UserResp, PageStatData, 
 };
 use crate::diesel::{
     RunQueryDsl,
@@ -25,6 +26,7 @@ use crate::diesel::{
 use actix_web::dev::ConnectionInfo;
 use serde_json::to_value;
 use serde::{Deserialize, Serialize};
+use crate::errors::Error;
 
 
 pub fn pages_routes(config: &mut web::ServiceConfig) {
@@ -86,8 +88,6 @@ pub struct IndexPageResp {
     pub seconds:       i32,
 }
 pub async fn index_page(req: HttpRequest) -> Result<Json<IndexPageResp>, Error> {
-    use crate::models::{Blog, Service, Store, Wiki, Work};
-    use crate::utils::get_is_ajax;
 
     let _stat = get_stat_page(1, 0); 
  
