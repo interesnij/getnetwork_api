@@ -9,14 +9,14 @@ use actix_web::{
 use crate::schema;
 use crate::models::{
     User, Item, Categories, Feedback,
-    Tag, StatPage, Cat, SmallTag,
-    Blog, Service, Store, Wiki, Work,
+    Tag, StatPage, Cat, SmallTag, CatDetail,
+    Blog, Service, Store, Wiki, Work, ContentBlock,
 };
 use crate::utils::{
     establish_connection, get_request_user, is_desctop,
-    get_categories_2, get_stat_page, get_is_ajax_page,
+    get_categories_2, get_stat_page, get_is_ajax_page, get_is_ajax,
     IsAjaxData, IsAjaxPageData, IndexResponse, ErrorParams, 
-    TOKEN, UserResp, PageStatData, 
+    TOKEN, UserResp, PageStatData,  OwnerResp,
 };
 use crate::diesel::{
     RunQueryDsl,
