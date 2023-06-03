@@ -387,7 +387,7 @@ CREATE TABLE stat_pages (
     types   SMALLINT NOT NULL,  -- главная страница, инфо ......
     view    INT NOT NULL,
     height  FLOAT NOT NULL,
-    seconds INT NOT NULL,
+    seconds INT NOT NULL
 );
 INSERT INTO stat_pages (id, types, view, height, seconds)
 VALUES (1, 1, 0, 0.0, 0) ON CONFLICT DO NOTHING;
