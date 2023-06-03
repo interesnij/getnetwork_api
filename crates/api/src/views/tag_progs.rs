@@ -766,5 +766,5 @@ pub async fn delete_tag(req: HttpRequest, data: Json<DeleteItemData>) -> Result<
         .execute(&_connection)
         .expect("E");
 
-    return Json(1);
+    return Ok(Json(1));
 }

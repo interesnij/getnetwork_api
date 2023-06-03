@@ -115,6 +115,7 @@ pub async fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
         // не будем получать общие данные, если is_ajax > 0, 
         // так как эти данные уже были получены
         return UserResp {
+            id:         0,
             username:   "".to_string(),
             image:      "".to_string(),
             perm:       0,
@@ -133,6 +134,7 @@ pub async fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
         
         User::create_superuser(user_id);
         return UserResp {
+            id:         user.id,
             username:   user.username.clone(),
             image:      user.image.clone(),
             perm:       user.perm,
@@ -141,6 +143,7 @@ pub async fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
         };
     } 
     return UserResp {
+        id:         0,
         username:   "".to_string(),
         image:      "".to_string(),
         perm:       0,
