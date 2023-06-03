@@ -22,6 +22,7 @@ use crate::schema;
 use crate::models::{
     Tag, SmallTag, NewTag, TagItems, StatPage,
     Item, Blog, Service, Store, Wiki, Work, Help,
+    EditTag,
 };
 use crate::errors::Error;
 
@@ -691,7 +692,7 @@ pub async fn edit_tag(req: HttpRequest, mut payload: Multipart) -> Result<Json<i
     }
 
     let _connection = establish_connection();
-    let _tag = tags
+    let _tag = schema::tags::table
         .filter(schema::tags::id.eq(form.id))
         .first::<Tag>(&_connection)
         .expect("E");
