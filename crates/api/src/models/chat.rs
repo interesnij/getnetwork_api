@@ -65,10 +65,11 @@ impl Message {
             .filter(schema::files::item_id.eq(self.id))
             .filter(schema::files::item_types.eq(self.types))
             .select((
-                schema::files::id, 
-                schema::files::src, 
+                schema::files::id,
+                schema::files::types,
+                schema::files::src,
                 schema::files::description.nullable()
-            ))
+            )) 
             .load::<SmallFile>(&_connection)
             .expect("E");
         

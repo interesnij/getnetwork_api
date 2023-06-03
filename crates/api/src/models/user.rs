@@ -20,13 +20,15 @@ use crate::errors::Error;
 
 #[derive(Debug, Queryable, Serialize, Identifiable)]
 pub struct User {
-    pub id:       i32,
-    pub username: String,
-    pub email:    String,
-    pub password: String,
-    pub bio:      Option<String>,
-    pub image:    Option<String>,
-    pub perm:     i16,
+    pub id:         i32,
+    pub first_name: String,
+    pub last_name:  String,
+    pub username:   String,
+    pub email:      String,
+    pub password:   String,
+    pub bio:        Option<String>,
+    pub image:      Option<String>,
+    pub perm:       i16,
 }
 
 impl User {
@@ -54,12 +56,14 @@ impl User {
 #[derive(Debug, Deserialize, Insertable)]
 #[table_name="users"]
 pub struct NewUser {
-    pub username: String,
-    pub email:    String,
-    pub password: String,
-    pub bio:      Option<String>,
-    pub image:    Option<String>,
-    pub perm:     i16,
+    pub first_name: String,
+    pub last_name:  String,
+    pub username:   String,
+    pub email:      String,
+    pub password:   String,
+    pub bio:        Option<String>,
+    pub image:      Option<String>,
+    pub perm:       i16,
 }
 
 #[derive(Debug, Deserialize)]
@@ -71,11 +75,13 @@ pub struct LoginUser {
 #[derive(Debug, AsChangeset)]
 #[table_name = "users"]
 pub struct UserChange {
-    pub username: String,
-    pub email:    String,
-    pub password: String,
-    pub bio:      String,
-    pub image:    String,
+    pub first_name: String,
+    pub last_name:  String,
+    pub username:   String,
+    pub email:      String,
+    pub password:   String,
+    pub bio:        String,
+    pub image:      String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
