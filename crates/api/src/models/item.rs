@@ -1155,7 +1155,7 @@ impl Item {
             return "/static/images/img.jpg".to_string();
         }
     }
-    pub fn get_files(&self) -> () { 
+    pub fn get_files(&self) -> (Vec<&SmallFile>, Vec<&SmallFile>, Vec<&SmallFile>, Vec<&SmallFile>) { 
         use schema::files::dsl::files;
 
         let mut photos = Vec::new();
@@ -2625,7 +2625,9 @@ impl NewItemContent {
             title:      title,
             item_title: item_title,
             content:    content,
+            types:      1,
             item_id:    item_id,
+            item_types: item_types,
             user_id:    user_id,
             position:   position,
             created:    chrono::Local::now().naive_utc() + Duration::hours(3),
