@@ -86,7 +86,7 @@ impl Cat {
         is_admin: bool
     ) -> Vec<Item> {
         let _connection = establish_connection();
-        let ids = category
+        let ids = schema::category::table
             .filter(schema::category::categories_id.eq(self.id))
             .filter(schema::category::types.eq(types))
             .select(schema::category::item_id)
@@ -810,7 +810,7 @@ impl Categories {
                     schema::items::item_types,
                     schema::items::title,
                     schema::items::created
-                ))
+                )) 
                 .load::<Wiki>(&_connection)
                 .expect("E.");
         } else {

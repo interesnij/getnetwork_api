@@ -12,6 +12,7 @@ use crate::models::{
     Tag, StatPage, Cat, SmallTag, CatDetail, Serve,
     Blog, Service, Store, Wiki, Work, ContentBlock,
     ServeCategories, TechCategories, CookieStat,
+    SmallFile, File,
 };
 use crate::utils::{
     establish_connection, get_request_user, is_desctop,
