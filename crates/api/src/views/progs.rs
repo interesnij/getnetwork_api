@@ -18,6 +18,7 @@ use serde::{Deserialize, Serialize};
 use crate::utils::{
     establish_connection,
     get_cookie_user_id,
+    get_request_user_id,
     get_request_user, get_is_ajax,
     ErrorParams, TOKEN, UserResp,
 };
@@ -438,7 +439,7 @@ pub async fn create_item(mut payload: Multipart) -> Result<Json<i16>, Error> {
     // фух. Связи созданы все, но надо еще посчитать цену
     // услуги для калькулятора. Как? А  это будет сумма всех
     // цен выбранных опций.
-    let price_acc = get_price_acc_values(&item_price);
+    let price_acc = crate::utils::get_price_acc_values(&item_price);
     diesel::update(&_item)
         .set((
             schema::items::price.eq(item_price),
@@ -476,6 +477,7 @@ pub async fn edit_item(mut payload: Multipart) -> Result<Json<i16>, Error> {
         .filter(schema::items::id.eq(form.id))
         .first::<Item>(&_connection)
         .expect("E");
+    let _item_id = _item.id;
     if user_id != _item.user_id && _item.item_types > 9 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -1004,6 +1006,7 @@ pub async fn edit_file(req: HttpRequest, mut payload: Multipart) -> Result<Json<
 
     use crate::models::{EditFile, File};
 
+    let _connection = establish_connection();
     let _file = schema::files::table
         .filter(schema::files::id.eq(_file_id))
         .first::<File>(&_connection)
