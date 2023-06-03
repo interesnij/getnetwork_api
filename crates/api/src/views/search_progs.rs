@@ -439,7 +439,7 @@ pub async fn search_helps_page(req: HttpRequest) -> Result<Json<SearchHelpsResp>
     }
 
     let (items_list, items_count) = Help::search_helps(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
-    if items_count >= next_item {
+    if items_count >= (next_item as usize) {
         next_page_number = page + 1;
     }
 
