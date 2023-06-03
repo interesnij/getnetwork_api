@@ -2591,6 +2591,7 @@ pub struct ItemContent {
     pub item_id:    i32,
     pub item_types: i16,
     pub user_id:    i32,
+    pub position:   i16,
     pub created:    chrono::NaiveDateTime,
 }
 
@@ -2604,6 +2605,7 @@ pub struct NewItemContent {
     pub item_id:    i32,
     pub item_types: i16,
     pub user_id:    i32,
+    pub position:   i16,
     pub created:    chrono::NaiveDateTime,
 }
 
@@ -2617,7 +2619,7 @@ impl NewItemContent {
         user_id:    i32,
         position:   i16,
     ) -> Self {
-        use chrono::Duration;
+        use chrono::Duration; 
 
         NewItemContent {
             title:      title,

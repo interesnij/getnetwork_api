@@ -86,14 +86,15 @@ pub struct UserResp {
     pub device:     bool,
     pub categories: (),
 }
-#[derive(Serialize)]
+#[derive(Serialize, Queryable)]
 pub struct OwnerResp {
     pub first_name: String,
     pub last_name:  String,
     pub username:   String,
     pub image:      String,
     pub perm:       i16,
-} 
+}
+
 
 pub async fn get_request_user_id(req: &HttpRequest) -> i32 {
     use actix_web_httpauth::headers::authorization::{Authorization, Bearer};
