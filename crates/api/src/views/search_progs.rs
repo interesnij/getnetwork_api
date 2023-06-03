@@ -194,7 +194,7 @@ pub async fn search_blogs_page(req: HttpRequest) -> Result<Json<SearchBlogsResp>
     }
 
     let (items_list, items_count) = Item::search_blogs(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
-    if items_count >= next_item {
+    if items_count >= (next_item as usize) {
         next_page_number = page + 1;
     }
 
@@ -242,8 +242,8 @@ pub async fn search_services_page(req: HttpRequest) -> Result<Json<SearchService
         next_item = 21;
     }
 
-    let (items_list, items_count) = Service::search_services(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
-    if items_count >= next_item {
+    let (items_list, items_count) = Item::search_services(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
+    if items_count >= (next_item as usize) {
         next_page_number = page + 1;
     }
 
@@ -291,8 +291,8 @@ pub async fn search_stores_page(req: HttpRequest) -> Result<Json<SearchStoresRes
         next_item = 21;
     }
 
-    let (items_list, items_count) = Store::search_stores(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
-    if items_count >= next_item {
+    let (items_list, items_count) = Item::search_stores(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
+    if items_count >= (next_item as usize) {
         next_page_number = page + 1;
     }
 
@@ -340,8 +340,8 @@ pub async fn search_wikis_page(req: HttpRequest) -> Result<Json<SearchWikisResp>
         next_item = 21;
     }
 
-    let (items_list, items_count) = Wiki::search_wikis(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
-    if items_count >= next_item {
+    let (items_list, items_count) = Item::search_wikis(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
+    if items_count >= (next_item as usize) {
         next_page_number = page + 1;
     }
 
@@ -389,8 +389,8 @@ pub async fn search_works_page(req: HttpRequest) -> Result<Json<SearchWorksResp>
         next_item = 21;
     }
 
-    let (items_list, items_count) = Work::search_works(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
-    if items_count >= next_item {
+    let (items_list, items_count) = Item::search_works(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
+    if items_count >= (next_item as usize) {
         next_page_number = page + 1;
     }
 
@@ -438,7 +438,7 @@ pub async fn search_helps_page(req: HttpRequest) -> Result<Json<SearchHelpsResp>
         next_item = 21;
     }
 
-    let (items_list, items_count) = Help::search_helps(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
+    let (items_list, items_count) = Item::search_helps(&_q_standalone, 20, offset.into(), _request_user.perm > 59);
     if items_count >= (next_item as usize) {
         next_page_number = page + 1;
     }
