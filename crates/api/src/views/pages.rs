@@ -1056,7 +1056,7 @@ async fn get_item_page (
         slug:  _category.slug.clone(),
         count: _category.count,
         id:    _category.id,
-        image: _category.get_image(),
+        image: Some(_category.get_image()),
     };
 
     return Json(ObjectPageResp {

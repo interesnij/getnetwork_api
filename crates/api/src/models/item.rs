@@ -1104,7 +1104,7 @@ impl Item {
             first_name: "".to_string(),
             last_name:  "".to_string(),
             username:   "".to_string(),
-            image:      "".to_string(),
+            image:      None,
             perm:       0,
         };
     }

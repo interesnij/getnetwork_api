@@ -91,7 +91,7 @@ pub struct OwnerResp {
     pub first_name: String,
     pub last_name:  String,
     pub username:   String,
-    pub image:      String,
+    pub image:      Option<String>,
     pub perm:       i16,
 }
 
