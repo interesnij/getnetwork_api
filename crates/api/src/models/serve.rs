@@ -187,17 +187,7 @@ pub struct Serve {
     pub serve_id:         Option<i32>,
     pub view:             i32,
 }
-#[derive(AsChangeset)]
-#[table_name="serve"]
-pub struct EditServe {
-    pub name:        String,
-    pub description: Option<String>,
-    pub position:    i16,
-    pub price:       i32,
-    pub man_hours:   i16,
-    pub is_default:  bool,
-    pub serve_id:    Option<i32>,
-}
+
 #[derive(Serialize, Queryable)]
 pub struct ServeVar {
     pub id:               i32,

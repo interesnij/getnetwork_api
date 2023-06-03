@@ -177,7 +177,7 @@ pub async fn search_blogs_page(req: HttpRequest) -> Result<Json<SearchBlogsResp>
         }));
     }
 
-    let _q_standalone = "%".to_owned() + &_q + "%";
+    let _q_standalone = "%".to_owned() + &q + "%";
     let mut next_page_number = 0;
     let offset: i32;
     let next_item: i32;
@@ -226,7 +226,7 @@ pub async fn search_services_page(req: HttpRequest) -> Result<Json<SearchService
         }));
     }
 
-    let _q_standalone = "%".to_owned() + &_q + "%";
+    let _q_standalone = "%".to_owned() + &q + "%";
     let mut next_page_number = 0;
     let offset: i32;
     let next_item: i32;
@@ -275,7 +275,7 @@ pub async fn search_stores_page(req: HttpRequest) -> Result<Json<SearchStoresRes
         }));
     }
 
-    let _q_standalone = "%".to_owned() + &_q + "%";
+    let _q_standalone = "%".to_owned() + &q + "%";
     let mut next_page_number = 0;
     let offset: i32;
     let next_item: i32;
@@ -324,7 +324,7 @@ pub async fn search_wikis_page(req: HttpRequest) -> Result<Json<SearchWikisResp>
         }));
     }
 
-    let _q_standalone = "%".to_owned() + &_q + "%";
+    let _q_standalone = "%".to_owned() + &q + "%";
     let mut next_page_number = 0;
     let offset: i32;
     let next_item: i32;
@@ -373,7 +373,7 @@ pub async fn search_works_page(req: HttpRequest) -> Result<Json<SearchWorksResp>
         }));
     }
 
-    let _q_standalone = "%".to_owned() + &_q + "%";
+    let _q_standalone = "%".to_owned() + &q + "%";
     let mut next_page_number = 0;
     let offset: i32;
     let next_item: i32;
@@ -422,7 +422,7 @@ pub async fn search_helps_page(req: HttpRequest) -> Result<Json<SearchHelpsResp>
         }));
     }
 
-    let _q_standalone = "%".to_owned() + &_q + "%";
+    let _q_standalone = "%".to_owned() + &q + "%";
     let mut next_page_number = 0;
     let offset: i32;
     let next_item: i32;
