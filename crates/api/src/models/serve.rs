@@ -252,7 +252,6 @@ impl Serve {
             .filter(schema::serve::is_default.eq(true))
             .first::<Serve>(&_connection);
             .expect("E");
-        }
     }
     pub fn is_parent(&self) -> bool {
         use crate::schema::serve::dsl::serve;
