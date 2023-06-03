@@ -19,7 +19,7 @@ use crate::errors::Error;
 
 
 #[derive(Debug, Queryable, Serialize, Identifiable)]
-pub struct User {
+pub struct User { 
     pub id:         i32,
     pub first_name: String,
     pub last_name:  String,
@@ -29,6 +29,9 @@ pub struct User {
     pub bio:        Option<String>,
     pub image:      Option<String>,
     pub perm:       i16,
+    pub view:       i32,
+    pub height:     f64,
+    pub seconds:    i32,
 }
 
 impl User {
@@ -64,6 +67,9 @@ pub struct NewUser {
     pub bio:        Option<String>,
     pub image:      Option<String>,
     pub perm:       i16,
+    pub view:       i32,
+    pub height:     f64,
+    pub seconds:    i32,
 }
 
 #[derive(Debug, Deserialize)]
