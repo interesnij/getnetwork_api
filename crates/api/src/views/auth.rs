@@ -51,6 +51,7 @@ pub struct IncommingUserResp {
 }
 
 pub async fn login (
+    req: HttpRequest,
     data: Json<LoginUser2>,
     state: web::Data<AppState>
 ) -> Result<Json<UserResp>, Error> {

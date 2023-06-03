@@ -29,6 +29,7 @@ use serde::{Deserialize, Serialize};
 use actix_multipart::Multipart;
 use crate::models::User;
 use actix_web::dev::ConnectionInfo;
+use crate::errors::Error;
 
 
 pub fn order_routes(config: &mut web::ServiceConfig) {

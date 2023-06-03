@@ -14,7 +14,7 @@ use crate::diesel::{
     QueryDsl,
 };
 use crate::utils::{
-    establish_connection,
+    establish_connection, get_is_ajax,
     get_request_user, get_stat_page,
     ErrorParams, TOKEN, UserResp,
 };
@@ -23,6 +23,8 @@ use crate::models::{
     Tag, SmallTag, NewTag, TagItems,
     Item, Blog, Service, Store, Wiki, Work, Help,
 };
+use crate::errors::Error;
+
 
 pub fn tag_routes(config: &mut web::ServiceConfig) {
     config.route("/tags", web::get().to(tags_page));
@@ -60,7 +62,7 @@ pub async fn create_tag_page(req: HttpRequest) -> Result<Json<CreateTagPageResp>
     }
 
     let _connection = establish_connection();
-    let all_tags = schema::tags:table
+    let all_tags = schema::tags::table
         .load::<Tag>(&_connection)
         .expect("Error.");
     

@@ -13,6 +13,7 @@ use crate::utils::{
     get_request_user, get_is_ajax,
     ErrorParams, TOKEN, UserResp,
 };
+use crate::errors::Error;
 
 
 pub fn search_routes(config: &mut web::ServiceConfig) {
