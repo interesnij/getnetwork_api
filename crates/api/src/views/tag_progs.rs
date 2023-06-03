@@ -709,7 +709,7 @@ pub async fn edit_tag(req: HttpRequest, mut payload: Multipart) -> Result<Json<i
     return Json(1);
 }
 
-#[derive(Serialize)]
+#[derive(Deserialize)]
 pub struct DeleteItemData {
     pub token: Option<String>,
     pub id:    Option<i32>,

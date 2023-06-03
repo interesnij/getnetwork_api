@@ -247,17 +247,11 @@ impl Serve {
         use crate::schema::serve::dsl::serve;
 
         let _connection = establish_connection();
-        let _serves = serve
+        return serve
             .filter(schema::serve::serve_id.eq(self.id))
             .filter(schema::serve::is_default.eq(true))
             .first::<Serve>(&_connection);
-        if _serves.is_ok() {
-            return _serves.expect("E");
-        }
-        else {
-            return serve
-                .first::<Serve>(&_connection)
-                .expect("E");
+            .expect("E");
         }
     }
     pub fn is_parent(&self) -> bool {

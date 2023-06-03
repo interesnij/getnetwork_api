@@ -772,7 +772,7 @@ pub async fn edit_category(req: HttpRequest, mut payload: Multipart) -> Result<J
     return Json(1);
 }
 
-#[derive(Serialize)]
+#[derive(Deserialize)]
 pub struct DeleteItemData {
     pub id:    Option<i32>,
     pub token: Option<String>,
