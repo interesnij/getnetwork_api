@@ -6,6 +6,7 @@ use actix_web::{
 };
 
 use crate::models::{Item, Blog, Service, Store, Wiki, Work, Help};
+use serde::{Deserialize, Serialize};
 
 use crate::utils::{
     establish_connection,
@@ -125,7 +126,7 @@ fn get_q_page_is_ajax(req: &HttpRequest) -> (String, i16, i16) {
     let params_some = web::Query::<SearchItemsPageData>::from_query(&req.query_string());
     let q: String;
     let page: i32;
-    let is_ajax: i32;
+    let is_ajax: i16;
     if params_some.is_ok() {
         let params = params_some.unwrap();
         if params.page.is_some() && params.page.unwrap() > 1 {

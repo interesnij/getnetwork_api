@@ -4,6 +4,7 @@ use actix_web::{
     web,
     web::{block, Data, Json},
 };
+use serde::{Deserialize, Serialize};
 use crate::models::User;
 use actix_multipart::Multipart;
 use std::borrow::BorrowMut;
