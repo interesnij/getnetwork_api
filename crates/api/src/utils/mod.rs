@@ -291,7 +291,7 @@ pub fn get_is_ajax(req: &HttpRequest) -> i16 {
 #[derive(Deserialize)]
 pub struct IsAjaxPageData {
     pub is_ajax: Option<i16>,
-    pub page:    Option<i16>,
+    pub page:    Option<i32>,
 }
 pub fn get_is_ajax_page(req: &HttpRequest) -> (i16, i32) {
     let params_some = web::Query::<IsAjaxPageData>::from_query(&req.query_string());

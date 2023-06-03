@@ -954,7 +954,7 @@ fn get_item_data(object: Item, perm: i16) -> ItemDetailResp {
             view:        object.view,
             height:      object.height, 
             seconds:     object.seconds,
-            tags:        object.get_tags(),
+            tags:        object.get_tags().expect("E"),
             owner:       Item::get_owner(object.user_id),
             contents:    object.get_contents(),
         } 
