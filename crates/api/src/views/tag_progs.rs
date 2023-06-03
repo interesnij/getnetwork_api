@@ -16,6 +16,7 @@ use crate::diesel::{
 use crate::utils::{
     establish_connection, get_is_ajax,
     get_request_user, get_stat_page,
+    get_is_ajax_page,
     ErrorParams, TOKEN, UserResp,
 };
 use crate::schema;
@@ -651,7 +652,7 @@ pub async fn edit_tag_page(req: HttpRequest) -> Result<Json<EditTagResp>, Error>
     
     let _request_user = get_request_user(&req, is_ajax).await;
     let _connection = establish_connection();
-    let _tag = tags
+    let _tag = schema::tags::table
         .filter(schema::tags::id.eq(&_tag_id))
         .first::<Tag>(&_connection)
         .expect("E");
@@ -752,8 +753,10 @@ pub async fn delete_tag(req: HttpRequest, data: Json<DeleteItemData>) -> Result<
         }).unwrap();
         return Err(Error::BadRequest(body));
     }
+    use crate::schema::tags_items::dsl::tags_items;
+
     diesel::delete(
-        schema::tags_items.filter(
+        tags_items.filter(
             schema::tags_items::tag_id.eq(_tag.id))
         )
         .execute(&_connection)

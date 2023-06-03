@@ -337,6 +337,8 @@ pub async fn create_item(mut payload: Multipart) -> Result<Json<i16>, Error> {
         return Err(Error::BadRequest(body));
     }
 
+    let _connection = establish_connection();
+
     let types = form.types;
     let new_item = NewItem::create (
         form.title.clone(),
