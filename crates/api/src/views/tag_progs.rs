@@ -162,7 +162,7 @@ pub async fn tag_page(req: HttpRequest) -> Result<Json<TagPageResp>, Error> {
     let _request_user = get_request_user(&req, is_ajax).await;
     let is_admin = _request_user.perm == 60;
     let _tag = schema::tags::table
-        .filter(schema::tags::name.eq(params.slug.unwrap()))
+        .filter(schema::tags::name.eq(params.slug.as_deref().unwrap()))
         .first::<Tag>(&_connection)
         .expect("E");
     let _tag_items = schema::tags_items::table
@@ -238,7 +238,7 @@ pub async fn tag_blogs_page(req: HttpRequest) -> Result<Json<TagBlogsPageResp>, 
     else {
         is_ajax = 0;
     }
-    let page: i16;
+    let page: i32;
     if params.page.is_some() && params.page.unwrap() > 1 {
         page = params.page.unwrap();
     }
@@ -249,7 +249,7 @@ pub async fn tag_blogs_page(req: HttpRequest) -> Result<Json<TagBlogsPageResp>, 
     let _connection = establish_connection();
     let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
-        .filter(schema::tags::name.eq(params.slug.unwrap()))
+        .filter(schema::tags::name.eq(params.slug.as_deref().unwrap()))
         .first::<Tag>(&_connection)
         .expect("E");
     let _tag_items = schema::tags_items::table
@@ -302,7 +302,7 @@ pub async fn tag_services_page(req: HttpRequest) -> Result<Json<TagServicesPageR
     else {
         is_ajax = 0;
     }
-    let page: i16;
+    let page: i32;
     if params.page.is_some() && params.page.unwrap() > 1 {
         page = params.page.unwrap();
     }
@@ -313,7 +313,7 @@ pub async fn tag_services_page(req: HttpRequest) -> Result<Json<TagServicesPageR
     let _connection = establish_connection();
     let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
-        .filter(schema::tags::name.eq(params.slug.unwrap()))
+        .filter(schema::tags::name.eq(params.slug.as_deref().unwrap()))
         .first::<Tag>(&_connection)
         .expect("E");
     let _tag_items = schema::tags_items::table
@@ -366,7 +366,7 @@ pub async fn tag_stores_page(req: HttpRequest) -> Result<Json<TagStoresPageResp>
     else {
         is_ajax = 0;
     }
-    let page: i16;
+    let page: i32;
     if params.page.is_some() && params.page.unwrap() > 1 {
         page = params.page.unwrap();
     }
@@ -377,7 +377,7 @@ pub async fn tag_stores_page(req: HttpRequest) -> Result<Json<TagStoresPageResp>
     let _connection = establish_connection();
     let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
-        .filter(schema::tags::name.eq(params.slug.unwrap()))
+        .filter(schema::tags::name.eq(params.slug.as_deref().unwrap()))
         .first::<Tag>(&_connection)
         .expect("E");
     let _tag_items = schema::tags_items::table
@@ -430,7 +430,7 @@ pub async fn tag_wikis_page(req: HttpRequest) -> Result<Json<TagWikisPageResp>, 
     else {
         is_ajax = 0;
     }
-    let page: i16;
+    let page: i32;
     if params.page.is_some() && params.page.unwrap() > 1 {
         page = params.page.unwrap();
     }
@@ -441,7 +441,7 @@ pub async fn tag_wikis_page(req: HttpRequest) -> Result<Json<TagWikisPageResp>, 
     let _connection = establish_connection();
     let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
-        .filter(schema::tags::name.eq(params.slug.unwrap()))
+        .filter(schema::tags::name.eq(params.slug.as_deref().unwrap()))
         .first::<Tag>(&_connection)
         .expect("E");
     let _tag_items = schema::tags_items::table
@@ -494,7 +494,7 @@ pub async fn tag_works_page(req: HttpRequest) -> Result<Json<TagWorksPageResp>, 
     else {
         is_ajax = 0;
     }
-    let page: i16;
+    let page: i32;
     if params.page.is_some() && params.page.unwrap() > 1 {
         page = params.page.unwrap();
     }
@@ -505,7 +505,7 @@ pub async fn tag_works_page(req: HttpRequest) -> Result<Json<TagWorksPageResp>, 
     let _connection = establish_connection();
     let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
-        .filter(schema::tags::name.eq(params.slug.unwrap()))
+        .filter(schema::tags::name.eq(params.slug.as_deref().unwrap()))
         .first::<Tag>(&_connection)
         .expect("E");
     let _tag_items = schema::tags_items::table
@@ -558,7 +558,7 @@ pub async fn tag_helps_page(req: HttpRequest) -> Result<Json<TagHelpsPageResp>, 
     else {
         is_ajax = 0;
     }
-    let page: i16;
+    let page: i32;
     if params.page.is_some() && params.page.unwrap() > 1 {
         page = params.page.unwrap();
     }
@@ -569,7 +569,7 @@ pub async fn tag_helps_page(req: HttpRequest) -> Result<Json<TagHelpsPageResp>, 
     let _connection = establish_connection();
     let _request_user = get_request_user(&req, is_ajax).await;
     let _tag = schema::tags::table
-        .filter(schema::tags::name.eq(params.slug.unwrap()))
+        .filter(schema::tags::name.eq(params.slug.as_deref().unwrap()))
         .first::<Tag>(&_connection)
         .expect("E");
     let _tag_items = schema::tags_items::table
@@ -699,7 +699,10 @@ pub async fn edit_tag(req: HttpRequest, mut payload: Multipart) -> Result<Json<i
         .expect("E");
     
     if _request_user.id != _tag.user_id && _request_user.perm != 60 {
-        return Json(0);
+        let body = serde_json::to_string(&ErrorParams {
+            error: "Permission Denied".to_string(),
+        }).unwrap();
+        return Err(Error::BadRequest(body));
     }
     let _new_tag = EditTag {
         name:     form.name.clone(),
@@ -711,7 +714,7 @@ pub async fn edit_tag(req: HttpRequest, mut payload: Multipart) -> Result<Json<i
         .execute(&_connection)
         .expect("E");
 
-    return Json(1);
+    return Ok(Json(1));
 }
 
 #[derive(Deserialize)]

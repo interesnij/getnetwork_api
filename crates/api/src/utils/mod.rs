@@ -57,7 +57,7 @@ pub struct PageStatData {
     pub seconds: i32,
 }
 
-pub fn get_stat_page(types: i16, page: i16) -> PageStatData {
+pub fn get_stat_page(types: i16, page: i32) -> PageStatData {
     if page > 1 {
         return PageStatData {
             view:    0,
