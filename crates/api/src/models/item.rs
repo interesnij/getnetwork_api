@@ -67,7 +67,7 @@ pub struct Cat {
     pub slug:  String,
     pub count: i16,
     pub id:    i32,
-    pub image: Option<String>,
+    pub image: String,
     pub types: i16,
 }
 impl Cat {
