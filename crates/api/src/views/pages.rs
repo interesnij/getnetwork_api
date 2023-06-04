@@ -160,7 +160,7 @@ pub async fn history_page(req: HttpRequest) -> Result<Json<HistoryPageResp>, Err
         .expect("Error");
 
     let object_list: Vec<CookieStat>;
-    let next_page_number: i32;
+    let next_page_number: i16;
     let (is_ajax, page) = get_is_ajax_page(&req);
     
     let _res = block(move || CookieStat::get_stat_list(user_id, page, 20)).await?;
@@ -189,7 +189,7 @@ pub async fn feedback_list_page(req: HttpRequest) -> Result<Json<FeedbackListRes
         use crate::utils::get_is_ajax_page;
 
         let object_list: Vec<Feedback>;
-        let next_page_number: i32;
+        let next_page_number: i16;
         let _res = block(move || Feedback::get_list(page, 20)).await?;
         let _dict = match _res {
             Ok(_ok) => {object_list = _ok.0; next_page_number = _ok.1},
@@ -420,7 +420,7 @@ pub async fn get_user_history_page(req: HttpRequest) -> Result<Json<UserHistoryR
     use crate::models::CookieStat;
 
     let object_list: Vec<CookieStat>;
-    let next_page_number: i32;
+    let next_page_number: i16;
     let _res = block(move || CookieStat::get_stat_list(params.user_id.unwrap(), page, 20)).await?;
     let _dict = match _res {
         Ok(_ok) => {object_list = _ok.0; next_page_number = _ok.1},
@@ -896,7 +896,7 @@ pub struct CatDataResp {
 pub struct CategoriesPageResp {
     pub request_user: UserResp,
     pub categories:   Vec<CatDataResp>,
-    pub cats:         &Vec<Cat>,
+    pub cats:         Vec<Cat>,
     pub all_tags:     Vec<SmallTag>,
     pub view:         i32,
     pub height:       f64, 
@@ -1174,7 +1174,7 @@ async fn item_category_page (
     let _cats: Vec<Cat>;
     let _tags: Vec<SmallTag>;
     let object_list: Vec<Blog>;
-    let next_page_number: i32;
+    let next_page_number: i16;
         
     if is_ajax < 3 {
         let cats_res = block(move || Categories::get_categories_for_types(types)).await?;
@@ -1267,7 +1267,7 @@ async fn item_categories_page (
     };
 
     let mut categories: Vec<CatDataResp> = Vec::new();
-    let _cats_2 = &_cats;
+    let _cats_2 = _cats.clone();
     for cat in _cats.iter() {
         let mut stack = Vec::new();
         for i in cat.get_items_list(6, types, is_superuser).iter() {

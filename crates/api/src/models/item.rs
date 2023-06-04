@@ -61,7 +61,7 @@ impl CatDetail {
     }
 }
 
-#[derive(Serialize, Queryable)]
+#[derive(Serialize, Queryable, Clone)]
 pub struct Cat {
     pub name:  String,
     pub slug:  String,
