@@ -866,8 +866,8 @@ pub struct ItemResp {
     pub image:       String,
 }
 #[derive(Serialize)]
-pub struct CatDataResp {
-    pub category:    &Cat,
+pub struct CatDataResp<'a> {
+    pub category:    &'a Cat,
     pub object_list: Vec<ItemResp>,
 } 
 

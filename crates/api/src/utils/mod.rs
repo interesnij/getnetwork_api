@@ -123,13 +123,13 @@ pub fn get_stat_page(types: i16, page: i32) -> PageStatData {
 }
 
 #[derive(Serialize)]
-pub struct UserResp {
+pub struct UserResp<'a> {
     pub id:         i32,
     pub username:   String,
     pub image:      Option<String>,
     pub perm:       i16,
     pub device:     bool,
-    pub categories: (Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>),
+    pub categories: (Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>),
 }
 #[derive(Serialize, Queryable)]
 pub struct OwnerResp {
@@ -230,12 +230,12 @@ pub fn get_price_acc_values(price: &i32) -> Option<i32> {
     }
 
     pub fn get_categories_2(is_ajax: i16) -> (
-        Vec<&Cat>,
-        Vec<&Cat>,
-        Vec<&Cat>,
-        Vec<&Cat>,
-        Vec<&Cat>,
-        Vec<&Cat>
+        Vec<&'static Cat>,
+        Vec<&'static Cat>,
+        Vec<&'static Cat>,
+        Vec<&'static Cat>,
+        Vec<&'static Cat>,
+        Vec<&'static Cat>
     ) {
         if is_ajax == 0 {
             let _cats = Categories::get_categories().expect("E.");

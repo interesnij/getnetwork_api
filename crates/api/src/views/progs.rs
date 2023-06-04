@@ -316,7 +316,7 @@ pub async fn create_feedback(req: HttpRequest, conn: ConnectionInfo, mut payload
         email:    email,
         message:  message,
     };
-    let _new_feedback = diesel::insert_into(feedbacks::table)
+    let _new_feedback = diesel::insert_into(schema::feedbacks::table)
         .values(&new_feedback)
         .execute(&_connection)
         .expect("E.");
