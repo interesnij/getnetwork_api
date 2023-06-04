@@ -80,11 +80,12 @@ pub fn get_stat_page(types: i16, page: i32) -> PageStatData {
 
 #[derive(Serialize)]
 pub struct UserResp {
+    pub id:         i32,
     pub username:   String,
     pub image:      String,
     pub perm:       i16,
     pub device:     bool,
-    pub categories: (),
+    pub categories: (Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>),
 }
 #[derive(Serialize, Queryable)]
 pub struct OwnerResp {
