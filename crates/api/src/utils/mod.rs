@@ -42,7 +42,7 @@ pub struct IsAjaxData {
     pub is_ajax: Option<i16>,
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize, Queryable)]
 pub struct PageStatData {
     pub view:    i32,
     pub height:  f64, 
