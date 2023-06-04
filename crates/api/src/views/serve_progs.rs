@@ -932,7 +932,7 @@ pub async fn edit_serve(req: HttpRequest, mut payload: Multipart) -> Result<Json
 
 #[derive(Deserialize)]
 pub struct DeleteServeData {
-    pub token: String,
+    pub token: Option<String>,
     pub id:    Option<i32>,
 }
 pub async fn delete_serve(req: HttpRequest, data: Json<DeleteServeData>) -> Result<Json<i16>, Error> {

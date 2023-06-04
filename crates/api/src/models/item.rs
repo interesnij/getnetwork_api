@@ -609,7 +609,7 @@ impl Categories {
             next_page_number = page + 1;
         }
 
-        return Ok((object_list, next_page_number));
+        return Ok((object_list, next_page_number as i16));
     }
     pub fn get_services (
         cat_id:   i32,
@@ -690,7 +690,7 @@ impl Categories {
             next_page_number = page + 1;
         }
 
-        return Ok((object_list, next_page_number));
+        return Ok((object_list, next_page_number as i16));
     }
     pub fn get_stores (
         cat_id:   i32,
@@ -775,7 +775,7 @@ impl Categories {
             next_page_number = page + 1;
         }
 
-        return Ok((object_list, next_page_number));
+        return Ok((object_list, next_page_number as i16));
     }
     pub fn get_wikis (
         cat_id:   i32,
@@ -858,7 +858,7 @@ impl Categories {
             next_page_number = page + 1;
         }
 
-        return Ok((object_list, next_page_number));
+        return Ok((object_list, next_page_number as i16));
     }
     pub fn get_works (
         cat_id:   i32,
@@ -939,7 +939,7 @@ impl Categories {
             next_page_number = page + 1;
         }
 
-        return Ok((object_list, next_page_number));
+        return Ok((object_list, next_page_number as i16));
     }
     pub fn get_helps (
         cat_id:   i32,

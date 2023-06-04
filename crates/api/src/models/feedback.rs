@@ -23,7 +23,7 @@ impl Feedback {
         if page > 1 {
             let step = (page - 1) * 20;
             have_next = page * limit + 1;
-            object_list = feedbacks
+            object_list = schema::feedbacks
                 .limit(limit.into())
                 .offset(step.into())
                 .load::<Feedback>(&_connection)
