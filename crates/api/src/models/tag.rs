@@ -34,7 +34,7 @@ pub struct Tag {
 }
 impl Tag {
     pub fn get_tags_list(page: i32, limit: i32) -> (Vec<SmallTag>, i16) {
-        let mut next_page_number: i16 = 0;
+        let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<SmallTag>;
 
@@ -51,7 +51,7 @@ impl Tag {
             next_page_number = page + 1;
         }
 
-        return (object_list, next_page_number);
+        return (object_list, next_page_number as i16);
     }
     pub fn get_tags(limit: i64, offset: i64) -> Vec<SmallTag> {
         use crate::schema::tags::dsl::tags;

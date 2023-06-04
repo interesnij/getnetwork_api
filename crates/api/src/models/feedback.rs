@@ -15,6 +15,7 @@ pub struct Feedback {
 }
 impl Feedback {
     pub fn get_list(page: i32, limit: i32) -> Result<(Vec<Feedback>, i32), Error> {
+        use crate::schema::feedbacks::dsl::feedbacks;
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Feedback>;
@@ -22,7 +23,7 @@ impl Feedback {
         if page > 1 {
             let step = (page - 1) * 20;
             have_next = page * limit + 1;
-            object_list = schema::feedbacks::table
+            object_list = feedbacks
                 .limit(limit.into())
                 .offset(step.into())
                 .load::<Feedback>(&_connection)
@@ -30,14 +31,14 @@ impl Feedback {
         } 
         else {
             have_next = limit + 1;
-            object_list = schema::feedbacks::table
+            object_list = feedbacks
                 .limit(limit.into())
                 .offset(0)
                 .load::<Feedback>(&_connection)
                 .expect("E");
         }
-        if schema::feedbacks::table
-            .limit(1)
+        if feedbacks
+            .limit(1) 
             .offset(have_next.into())
             .select(schema::feedbacks::id)
             .load::<i32>(&_connection)
