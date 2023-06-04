@@ -872,7 +872,7 @@ pub struct CategoryPageResp {
     pub cats:             Vec<Cat>,
     pub all_tags:         Vec<SmallTag>,
     pub object_list:      Vec<Blog>,
-    pub next_page_number: i32,
+    pub next_page_number: i16,
 }
 
 #[derive(Serialize)]
@@ -1279,7 +1279,7 @@ async fn item_categories_page (
     return Ok(Json( CategoriesPageResp {
         request_user: _request_user,
         categories:   categories,
-        all_tags:     Categories::get_tags(types),
+        all_tags:     Categories::get_tags(types).expect("E."),
         view:         _stat.view,
         height:       _stat.height, 
         seconds:      _stat.seconds,

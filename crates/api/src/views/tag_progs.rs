@@ -213,7 +213,7 @@ pub struct TagBlogsPageResp {
     pub tag:              Tag,
     pub blogs_list:       Vec<Blog>,
     pub blogs_count:      usize,
-    pub next_page_number: i32
+    pub next_page_number: i16,
 }
 pub async fn tag_blogs_page(req: HttpRequest) -> Result<Json<TagBlogsPageResp>, Error> {
     let params_some = web::Query::<TagPageData>::from_query(&req.query_string());
@@ -277,7 +277,7 @@ pub struct TagServicesPageResp {
     pub tag:              Tag,
     pub services_list:    Vec<Service>,
     pub services_count:   usize,
-    pub next_page_number: i32
+    pub next_page_number: i16,
 }
 pub async fn tag_services_page(req: HttpRequest) -> Result<Json<TagServicesPageResp>, Error> {
     let params_some = web::Query::<TagPageData>::from_query(&req.query_string());
@@ -341,7 +341,7 @@ pub struct TagStoresPageResp {
     pub tag:              Tag,
     pub stores_list:      Vec<Store>,
     pub stores_count:     usize,
-    pub next_page_number: i32
+    pub next_page_number: i16,
 }
 pub async fn tag_stores_page(req: HttpRequest) -> Result<Json<TagStoresPageResp>, Error> {
     let params_some = web::Query::<TagPageData>::from_query(&req.query_string());
@@ -405,7 +405,7 @@ pub struct TagWikisPageResp {
     pub tag:              Tag,
     pub wikis_list:       Vec<Wiki>,
     pub wikis_count:      usize,
-    pub next_page_number: i32
+    pub next_page_number: i16,
 }
 pub async fn tag_wikis_page(req: HttpRequest) -> Result<Json<TagWikisPageResp>, Error> {
     let params_some = web::Query::<TagPageData>::from_query(&req.query_string());
@@ -469,7 +469,7 @@ pub struct TagWorksPageResp {
     pub tag:              Tag,
     pub works_list:       Vec<Work>,
     pub works_count:      usize,
-    pub next_page_number: i32
+    pub next_page_number: i16,
 }
 pub async fn tag_works_page(req: HttpRequest) -> Result<Json<TagWorksPageResp>, Error> {
     let params_some = web::Query::<TagPageData>::from_query(&req.query_string());
@@ -533,7 +533,7 @@ pub struct TagHelpsPageResp {
     pub tag:              Tag,
     pub helps_list:       Vec<Help>,
     pub helps_count:      usize,
-    pub next_page_number: i32
+    pub next_page_number: i16,
 }
 pub async fn tag_helps_page(req: HttpRequest) -> Result<Json<TagHelpsPageResp>, Error> {
     let params_some = web::Query::<TagPageData>::from_query(&req.query_string());
@@ -597,7 +597,7 @@ pub struct TagsPageResp {
     pub request_user:     UserResp,
     pub all_tags:         Vec<SmallTag>,
     pub tags_count:       usize,
-    pub next_page_number: i32,
+    pub next_page_number: i16,
     pub stat:             PageStatData,
 }
 pub async fn tags_page(req: HttpRequest) -> Result<Json<TagsPageResp>, Error> {

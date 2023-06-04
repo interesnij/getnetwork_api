@@ -44,7 +44,7 @@ pub fn order_routes(config: &mut web::ServiceConfig) {
 pub struct OrdersPageResp {
     pub request_user:     UserResp,
     pub object_list:      Vec<Order>,
-    pub next_page_number: i32,
+    pub next_page_number: i16,
 }
 pub async fn get_orders_page(req: HttpRequest) -> Result<Json<OrdersPageResp>, Error> {
     use crate::utils::get_is_ajax_page;
