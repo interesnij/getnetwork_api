@@ -1253,13 +1253,6 @@ async fn item_categories_page (
     let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
     let is_superuser = _request_user.perm == 60;
 
-    //let _cats = Categories::get_categories_for_types(types).expect("R.");
-    let tags_res = block(move || Categories::get_tags(types)).await?;
-    _tags = match tags_res {
-        Ok(_list) => _list, 
-        Err(_error) => Vec::new(),
-    };
-
     let mut categories: Vec<CatDataResp> = Vec::new();
     let cats = Categories::get_categories_for_types(types).expect("R.");
     for cat in cats.iter() {
@@ -1286,7 +1279,7 @@ async fn item_categories_page (
     return Ok(Json( CategoriesPageResp {
         request_user: _request_user,
         categories:   categories,
-        all_tags:     _tags,
+        all_tags:     Categories::get_tags(types),
         view:         _stat.view,
         height:       _stat.height, 
         seconds:      _stat.seconds,
