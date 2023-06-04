@@ -1868,6 +1868,7 @@ impl Item {
             .distinct()
             .load::<i32>(&_connection)
             .expect("E.");
+        let count = item_ids.len();
         if is_admin {
             return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1881,7 +1882,7 @@ impl Item {
                     schema::items::item_types,
                 ))
                 .load::<Help>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
         } else {
             return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1895,7 +1896,7 @@ impl Item {
                     schema::items::item_types,
                 ))
                 .load::<Help>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
         }
     }
 
