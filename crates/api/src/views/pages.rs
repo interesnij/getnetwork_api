@@ -1281,12 +1281,12 @@ async fn item_categories_page (
                 price_acc:   i.price_acc,
                 image:       i.get_image(),
             });
-            categories.push( CatDataResp {
-                category:    cat,
-                object_list: stack,
-
-            });
         }
+        categories.push( CatDataResp {
+            category:    cat,
+            object_list: stack,
+
+        });
     }
     
     return Ok(Json( CategoriesPageResp {
