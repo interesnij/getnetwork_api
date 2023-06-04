@@ -1162,7 +1162,7 @@ impl Item {
             return "/static/images/img.jpg".to_string();
         }
     }
-    pub fn get_files(&self) -> (Vec<&SmallFile>, Vec<&SmallFile>, Vec<&SmallFile>, Vec<&SmallFile>) { 
+    pub fn get_files(&self) -> (Vec<SmallFile>, Vec<SmallFile>, Vec<SmallFile>, Vec<SmallFile>) { 
         use schema::files::dsl::files;
 
         let mut photos = Vec::new();
@@ -1174,21 +1174,21 @@ impl Item {
         let _files = files
             .filter(schema::files::item_id.eq(self.id))
             .filter(schema::files::item_types.eq(self.types))
-            .select(( 
+            .select((
                 schema::files::id,
                 schema::files::types,
                 schema::files::src,
                 schema::files::description.nullable()
-            ))
+            )) 
             .load::<SmallFile>(&_connection)
             .expect("E");
         
         for file in _files.iter() {
             match file.types {
-                1 => photos.push(file),
-                2 => videos.push(file),
-                3 => audios.push(file),
-                4 => docs.push(file),
+                1 => photos.push(file.clone()),
+                2 => videos.push(file.clone()),
+                3 => audios.push(file.clone()),
+                4 => docs.push(file.clone()),
             };
         }
         return (photos, videos, audios, docs);

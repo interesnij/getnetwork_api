@@ -76,10 +76,10 @@ impl Message {
         
         for file in _files.iter() {
             match file.types {
-                11 => photos.push(file),
-                12 => videos.push(file),
-                13 => audios.push(file),
-                14 => docs.push(file),
+                11 => photos.push(file.clone()),
+                12 => videos.push(file.clone()),
+                13 => audios.push(file.clone()),
+                14 => docs.push(file.clone()),
             };
         }
         return (photos, videos, audios, docs);
