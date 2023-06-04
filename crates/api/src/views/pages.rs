@@ -896,7 +896,6 @@ pub struct CatDataResp {
 pub struct CategoriesPageResp {
     pub request_user: UserResp,
     pub categories:   Vec<CatDataResp>,
-    pub cats:         Vec<Cat>,
     pub all_tags:     Vec<SmallTag>,
     pub view:         i32,
     pub height:       f64, 
@@ -1267,8 +1266,7 @@ async fn item_categories_page (
     };
 
     let mut categories: Vec<CatDataResp> = Vec::new();
-    let _cats_2 = _cats.clone();
-    for cat in _cats_2.iter() {
+    for cat in _cats.iter() {
         let mut stack = Vec::new();
         for i in cat.get_items_list(6, types, is_superuser).iter() {
             stack.push( ItemResp {
@@ -1292,7 +1290,6 @@ async fn item_categories_page (
     return Ok(Json( CategoriesPageResp {
         request_user: _request_user,
         categories:   categories,
-        cats:         _cats,
         all_tags:     _tags,
         view:         _stat.view,
         height:       _stat.height, 
