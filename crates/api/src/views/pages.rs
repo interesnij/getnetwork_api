@@ -1253,15 +1253,15 @@ async fn item_categories_page (
     let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
     let is_superuser = _request_user.perm == 60;
 
-    let _cats = Categories::get_categories_for_types(types).expect("R.");
+    //let _cats = Categories::get_categories_for_types(types).expect("R.");
     let tags_res = block(move || Categories::get_tags(types)).await?;
     _tags = match tags_res {
-        Ok(_list) => _list,
+        Ok(_list) => _list, 
         Err(_error) => Vec::new(),
     };
 
     let mut categories: Vec<CatDataResp> = Vec::new();
-    for cat in _cats.iter() {
+    for cat in Categories::get_categories_for_types(types).expect("R.").iter() {
         let mut stack = Vec::new();
         for i in cat.get_items_list(6, types, is_superuser).iter() {
             stack.push( ItemResp {
