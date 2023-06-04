@@ -37,7 +37,7 @@ pub struct LoginUser2 {
 }
 
 #[derive(Serialize)]
-pub struct IncommingUserResp<'a> {
+pub struct IncommingUserResp {
     pub token:      String,
     pub username:   String,
     pub image:      Option<String>,
@@ -50,7 +50,7 @@ pub async fn login (
     req: HttpRequest,
     data: Json<LoginUser2>,
     state: web::Data<AppState>
-) -> Result<Json<IncommingUserResp<'static>>, Error> { 
+) -> Result<Json<IncommingUserResp>, Error> { 
     let _user = User::get_user_by_name(&data.username.as_deref().unwrap().to_string());
     
     if get_request_user_id(&req).await != 0 {
@@ -124,7 +124,7 @@ pub async fn process_signup (
     req:   HttpRequest,
     state: web::Data<AppState>,
     data:  Json<NewUserForm>
-) -> Result<Json<IncommingUserResp<'static>>, Error> {
+) -> Result<Json<IncommingUserResp>, Error> {
     if data.token.as_deref().unwrap() != TOKEN || get_request_user_id(&req).await != 0 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),

@@ -16,7 +16,7 @@ use crate::utils::{
     establish_connection, get_request_user,
     get_stat_page, get_is_ajax_page, 
     get_is_ajax, get_page,
-    IndexResponse, ErrorParams, 
+    ErrorParams, 
     UserResp,  OwnerResp,
 };
 use crate::diesel::{

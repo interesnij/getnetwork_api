@@ -24,8 +24,8 @@ use crate::diesel::{
     RunQueryDsl,
     ExpressionMethods,
     QueryDsl,
-    ConnectionInfo,
 };
+use actix_web::dev::ConnectionInfo;
 
 pub static TOKEN: &str = "111";
 
@@ -50,24 +50,6 @@ pub struct PageStatData {
     pub seconds: i32,
 }
 
-pub async fn get_cookie_user_id(req: &HttpRequest) -> i32 {
-    let mut user_id = 0;
-    for header in req.headers().into_iter() {
-        if header.0 == "cookie" {
-            let str_cookie = header.1.to_str().unwrap();
-            let _cookie: Vec<&str> = str_cookie.split(";").collect();
-            for c in _cookie.iter() {
-                let split_c: Vec<&str> = c.split("=").collect();
-                if split_c[0] == "user" {
-                    user_id = split_c[1].parse().unwrap();
-                }
-                println!("name {:?}", split_c[0].trim());
-                println!("value {:?}", split_c[1]);
-            }
-        }
-    };
-    user_id
-}
 pub async fn get_or_create_cookie_user_id(conn: ConnectionInfo, req: &HttpRequest) -> i32 {
     let mut user_id = 0;
     for header in req.headers().into_iter() {
@@ -166,7 +148,7 @@ pub async fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
             image:      None,
             perm:       0,
             device:     true,
-            categories: (Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>), 
+            categories: (Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new(), Vec::new()), 
         };
     }
     let user_id = get_request_user_id(&req).await;
