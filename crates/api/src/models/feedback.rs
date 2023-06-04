@@ -44,7 +44,7 @@ impl Feedback {
             .is_ok() {
                 next_page_number = page + 1;
         }
-        let _tuple = (object_list, next_page_number as i16););
+        let _tuple = (object_list, next_page_number as i16);
         Ok(_tuple)
     }
 }
