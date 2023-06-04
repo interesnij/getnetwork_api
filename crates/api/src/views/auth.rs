@@ -18,7 +18,7 @@ use crate::diesel::{
 };
 use crate::schema;
 use futures::StreamExt;
-use crate::models::{User, NewUser};
+use crate::models::{User, NewUser, Cat};
 use crate::errors::Error;
 use actix_multipart::{Field, Multipart};
 use std::borrow::BorrowMut;

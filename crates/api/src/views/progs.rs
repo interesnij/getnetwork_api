@@ -7,6 +7,12 @@ use actix_web::{
 };
 use crate::schema;
 use crate::models::{
+    NewServeItems,
+    NewItem,
+    NewCategory,
+    Serve,
+    NewTechCategoriesItems,
+    NewTagItems,
     CookieUser,
     Categories,
     Tag,
@@ -331,7 +337,7 @@ pub async fn create_item(mut payload: Multipart) -> Result<Json<i16>, Error> {
         return Err(Error::BadRequest(body));
     }
 
-    let form = item_form(payload.borrow_mut(), user_id).await;
+    let form = crate::utils::item_form(payload.borrow_mut(), user_id).await;
     if form.token != TOKEN.to_string() {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
