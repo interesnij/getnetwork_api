@@ -2,6 +2,7 @@ use crate::schema;
 use crate::schema::feedbacks;
 use diesel::{Queryable, Insertable};
 use serde::{Serialize, Deserialize};
+use crate::errors::Error;
 
 
 #[derive(Debug ,Queryable, Serialize, Identifiable)]
@@ -21,7 +22,7 @@ impl Feedback {
         if page > 1 {
             let step = (page - 1) * 20;
             have_next = page * limit + 1;
-            object_list = feedbacks
+            object_list = schema::feedbacks::table
                 .limit(limit.into())
                 .offset(step.into())
                 .load::<Feedback>(&_connection)
@@ -29,13 +30,13 @@ impl Feedback {
         } 
         else {
             have_next = limit + 1;
-            object_list = feedbacks
+            object_list = schema::feedbacks::table
                 .limit(limit.into())
                 .offset(0)
                 .load::<Feedback>(&_connection)
                 .expect("E");
         }
-        if feedbacks
+        if schema::feedbacks::table
             .limit(1)
             .offset(have_next.into())
             .select(schema::feedbacks::id)

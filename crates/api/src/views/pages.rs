@@ -1060,10 +1060,11 @@ async fn get_item_page (
         image: Some(_category.get_image()),
         types: _category.types,
     };
-
+    let _request_user = get_request_user(&req, is_ajax).await;
+    let perm = _request_user.perm;
     return Ok(Json(ObjectPageResp {
-        request_user: get_request_user(&req, is_ajax).await,
-        object:       get_item_data(_item, _request_user.perm),
+        request_user: _request_user,
+        object:       get_item_data(_item, perm),
         category:     cat_data,
         cats:         _cats,
         all_tags:     _tags,

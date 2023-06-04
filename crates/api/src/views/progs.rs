@@ -11,7 +11,7 @@ use crate::models::{
     NewItem,
     NewCategory,
     Serve,
-    NewTechCategoriesItems,
+    NewTechCategoriesItem,
     NewTagItems,
     CookieUser,
     Categories,
@@ -270,7 +270,7 @@ pub async fn object_history(conn: ConnectionInfo, req: HttpRequest, id: web::Pat
     })
 }
 
-pub async fn create_feedback(conn: ConnectionInfo, mut payload: actix_multipart::Multipart) -> Result<Json<i16>, Error> {
+pub async fn create_feedback(req: HttpRequest, conn: ConnectionInfo, mut payload: actix_multipart::Multipart) -> Result<Json<i16>, Error> {
     let form = feedback_form(payload.borrow_mut()).await;
     if form.token != TOKEN.to_string() {
         let body = serde_json::to_string(&ErrorParams {
@@ -291,7 +291,7 @@ pub async fn create_feedback(conn: ConnectionInfo, mut payload: actix_multipart:
         return Err(Error::BadRequest(body));
     }
 
-    let feedbacks_count = feedbacks
+    let feedbacks_count = schema::feedbacks::table
         .filter(schema::feedbacks::user_id.eq(user_id))
         .select(schema::feedbacks::id)
         .load::<i32>(&_connection)
@@ -328,7 +328,7 @@ pub async fn create_feedback(conn: ConnectionInfo, mut payload: actix_multipart:
 }
 
 
-pub async fn create_item(mut payload: Multipart) -> Result<Json<i16>, Error> {
+pub async fn create_item(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
     let user_id = get_request_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {

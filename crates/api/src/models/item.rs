@@ -1352,7 +1352,7 @@ impl Item {
 
         if is_admin {
              return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .order(schema::items::created.desc())
                 .limit(limit)
                 .offset(offset)
@@ -1369,7 +1369,7 @@ impl Item {
                 .expect("E."), item_ids.len());
         } else {
             return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .order(schema::items::created.desc())
                 .limit(limit)
                 .offset(offset)
@@ -1454,7 +1454,7 @@ impl Item {
 
         if is_admin {
              return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .order(schema::items::created.desc())
                 .limit(limit)
                 .offset(offset)
@@ -1470,7 +1470,7 @@ impl Item {
                 .expect("E."), item_ids.len());
         } else {
             return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .filter(schema::items::item_types.lt(10))
                 .order(schema::items::created.desc())
                 .limit(limit)
@@ -1558,7 +1558,7 @@ impl Item {
             .expect("E.");
         if is_admin {
             return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .order(schema::items::created.desc())
                 .limit(limit)
                 .offset(offset)
@@ -1576,7 +1576,7 @@ impl Item {
                 .expect("E."), item_ids.len());
         } else {
             return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .filter(schema::items::item_types.lt(10))
                 .order(schema::items::created.desc())
                 .limit(limit)
@@ -1662,7 +1662,7 @@ impl Item {
             .expect("E.");
         if is_admin {
             return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .order(schema::items::created.desc())
                 .limit(limit)
                 .offset(offset)
@@ -1678,7 +1678,7 @@ impl Item {
                 .expect("E."), item_ids.len());
         } else {
             return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .filter(schema::items::item_types.lt(10))
                 .order(schema::items::created.desc())
                 .limit(limit)
@@ -1764,7 +1764,7 @@ impl Item {
             .expect("E.");
         if is_admin {
             return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .order(schema::items::created.desc())
                 .limit(limit)
                 .offset(offset)
@@ -1781,7 +1781,7 @@ impl Item {
                 .expect("E."), item_ids.len());
         } else {
             return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .filter(schema::items::item_types.lt(10))
                 .order(schema::items::created.desc())
                 .limit(limit)
@@ -1863,7 +1863,7 @@ impl Item {
             .expect("E.");
         if is_admin {
             return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .order(schema::items::created.desc())
                 .limit(limit)
                 .offset(offset)
@@ -1877,7 +1877,7 @@ impl Item {
                 .expect("E."), item_ids.len());
         } else {
             return (items
-                .filter(schema::items::eq_any(item_ids))
+                .filter(schema::items::id.eq_any(item_ids))
                 .order(schema::items::created.desc())
                 .limit(limit)
                 .offset(offset)
