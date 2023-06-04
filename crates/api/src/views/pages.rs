@@ -26,6 +26,7 @@ use crate::diesel::{
 };
 use serde::{Deserialize, Serialize};
 use crate::errors::Error;
+use actix_web::dev::ConnectionInfo;
 
 
 pub fn pages_routes(config: &mut web::ServiceConfig) {
