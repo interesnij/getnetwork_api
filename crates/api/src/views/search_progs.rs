@@ -200,7 +200,7 @@ pub async fn search_blogs_page(req: HttpRequest) -> Result<Json<SearchBlogsResp>
         blogs_list:       items_list,
         blogs_count:      items_count,
         q:                q,
-        next_page_number: next_page_number,
+        next_page_number: next_page_number as i16,
     }));
 }
 
@@ -249,7 +249,7 @@ pub async fn search_services_page(req: HttpRequest) -> Result<Json<SearchService
         services_list:    items_list,
         services_count:   items_count,
         q:                q,
-        next_page_number: next_page_number,
+        next_page_number: next_page_number as i16,
     }));
 }
 
@@ -298,7 +298,7 @@ pub async fn search_stores_page(req: HttpRequest) -> Result<Json<SearchStoresRes
         stores_list:      items_list,
         stores_count:     items_count,
         q:                q,
-        next_page_number: next_page_number,
+        next_page_number: next_page_number as i16,
     }));
 }
 
@@ -347,7 +347,7 @@ pub async fn search_wikis_page(req: HttpRequest) -> Result<Json<SearchWikisResp>
         wikis_list:       items_list,
         wikis_count:      items_count,
         q:                q,
-        next_page_number: next_page_number,
+        next_page_number: next_page_number as i16,
     }));
 }
 
@@ -396,7 +396,7 @@ pub async fn search_works_page(req: HttpRequest) -> Result<Json<SearchWorksResp>
         works_list:       items_list,
         works_count:      items_count,
         q:                q,
-        next_page_number: next_page_number,
+        next_page_number: next_page_number as i16,
     }));
 }
 
@@ -445,6 +445,6 @@ pub async fn search_helps_page(req: HttpRequest) -> Result<Json<SearchHelpsResp>
         helps_list:       items_list,
         helps_count:      items_count,
         q:                q,
-        next_page_number: next_page_number,
+        next_page_number: next_page_number as i16,
     }));
 }
