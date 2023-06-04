@@ -13,7 +13,7 @@ use crate::utils::{
     establish_connection,
     get_request_user,
     get_or_create_cookie_user_id,
-    get_cookie_user_id,
+    get_cookie_user_id, get_is_ajax,
     ErrorParams, TOKEN, UserResp, 
 };
 use crate::schema;

@@ -279,6 +279,7 @@ pub async fn create_feedback(req: HttpRequest, conn: ConnectionInfo, mut payload
     use crate::models::NewFeedback;
     use crate::utils::feedback_form;
 
+    let _connection = establish_connection();
     let user_id = get_cookie_user_id(&req).await;
     if user_id < 1 {
         let body = serde_json::to_string(&ErrorParams {
@@ -300,7 +301,7 @@ pub async fn create_feedback(req: HttpRequest, conn: ConnectionInfo, mut payload
         }).unwrap();
         return Err(Error::BadRequest(body));
     }
-    let _connection = establish_connection();
+    
     let message = form.message.clone();
     let email = form.email.clone();
     if message.len() < 30 || !email.contains("@") {

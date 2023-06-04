@@ -10,14 +10,14 @@ use crate::models::{
     Tag, Cat, SmallTag, CatDetail, Serve,
     Blog, Service, Store, Wiki, Work, ContentBlock,
     ServeCategories, TechCategories, CookieStat,
-    SmallFile, File, FeaturedItem,
+    SmallFile, File, FeaturedItem, StatPage,
 };
 use crate::utils::{
     establish_connection, get_request_user,
     get_stat_page, get_is_ajax_page, 
     get_is_ajax, get_page,
     IndexResponse, ErrorParams, 
-    TOKEN, UserResp,  OwnerResp,
+    UserResp,  OwnerResp,
 };
 use crate::diesel::{
     RunQueryDsl,
@@ -375,7 +375,7 @@ pub struct UserHistoryData {
     pub page:    Option<i32>,
 }
 pub async fn get_user_history_page(req: HttpRequest) -> Result<Json<UserHistoryResp>, Error> {
-    let page = get_page(&req);
+    let (is_ajax, page) = get_is_ajax_page(&req)
     let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.perm < 60 {
         let body = serde_json::to_string(&ErrorParams {
@@ -444,7 +444,8 @@ pub async fn get_tech_objects_page(req: HttpRequest) -> Result<Json<TechObjectsR
 
     use crate::schema::tech_categories::dsl::tech_categories;
 
-    let is_admin = get_request_user(&req, 2).await.perm > 59;
+    let _request_user = get_request_user(&req, 2).await;
+    let is_admin = _request_user.perm > 59;
     let _connection = establish_connection();
     let _cat = tech_categories
         .filter(schema::tech_categories::id.eq(params.id.unwrap()))

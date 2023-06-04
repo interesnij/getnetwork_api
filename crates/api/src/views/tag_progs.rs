@@ -14,7 +14,7 @@ use crate::diesel::{
 use crate::utils::{
     establish_connection, get_is_ajax,
     get_request_user, get_stat_page,
-    get_is_ajax_page,
+    get_is_ajax_page, PageStatData,
     ErrorParams, TOKEN, UserResp,
 };
 use crate::schema;
@@ -651,7 +651,7 @@ pub async fn edit_tag_page(req: HttpRequest) -> Result<Json<EditTagResp>, Error>
     let _request_user = get_request_user(&req, is_ajax).await;
     let _connection = establish_connection();
     let _tag = schema::tags::table
-        .filter(schema::tags::id.eq(&_tag_id))
+        .filter(schema::tags::id.eq(params.id.unwrap()))
         .first::<Tag>(&_connection)
         .expect("E");
     if _request_user.perm < 60 && _request_user.id != _tag.user_id {

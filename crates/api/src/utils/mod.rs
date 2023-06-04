@@ -9,10 +9,7 @@ pub use self::{
 };
 use actix_web::{
     HttpRequest,
-    HttpResponse,
     web,
-    error::InternalError,
-    http::StatusCode,
 };
 use crate::schema;
 use serde::{Deserialize, Serialize};
@@ -20,11 +17,6 @@ use crate::models::{
     Categories,
     User,
     Cat,
-    SmallTag,
-    SmallFile,
-    Tag,
-    TechCategories,
-    FeaturedItem,
 };
 use crate::diesel::{
     Connection,

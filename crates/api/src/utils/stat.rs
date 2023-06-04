@@ -1,11 +1,8 @@
-use actix::Addr;
-use serde_json::to_value;
 use crate::schema;
 use crate::utils::establish_connection;
 use crate::diesel::{ExpressionMethods, RunQueryDsl, QueryDsl};
 use schema::stat_pages::dsl::stat_pages;
 use crate::models::{StatPage, NewStatPage};
-use actix_web::web::Data;
 
 
 pub fn plus_page_stat (
