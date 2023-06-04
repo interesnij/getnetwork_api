@@ -37,7 +37,7 @@ pub struct LoginUser2 {
 }
 
 #[derive(Serialize)]
-pub struct IncommingUserResp {
+pub struct IncommingUserResp<'a> {
     pub token:      String,
     pub username:   String,
     pub image:      Option<String>,

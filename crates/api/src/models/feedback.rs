@@ -3,6 +3,7 @@ use crate::schema::feedbacks;
 use diesel::{Queryable, Insertable};
 use serde::{Serialize, Deserialize};
 use crate::errors::Error;
+use crate::utils::establish_connection;
 
 
 #[derive(Debug ,Queryable, Serialize, Identifiable)]
@@ -20,10 +21,11 @@ impl Feedback {
         let have_next: i32;
         let object_list: Vec<Feedback>;
 
+        let _connection = establish_connection();
         if page > 1 {
             let step = (page - 1) * 20;
             have_next = page * limit + 1;
-            object_list = schema::feedbacks
+            object_list = feedbacks
                 .limit(limit.into())
                 .offset(step.into())
                 .load::<Feedback>(&_connection)
@@ -31,13 +33,13 @@ impl Feedback {
         } 
         else {
             have_next = limit + 1;
-            object_list = schema::feedbacks
+            object_list = feedbacks
                 .limit(limit.into())
                 .offset(0)
                 .load::<Feedback>(&_connection)
                 .expect("E");
         }
-        if schema::feedbacks
+        if feedbacks
             .offset(have_next.into())
             .select(schema::feedbacks::id)
             .first::<i32>(&_connection)

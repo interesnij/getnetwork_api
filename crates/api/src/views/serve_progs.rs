@@ -10,7 +10,7 @@ use crate::diesel::{
     QueryDsl,
 };
 use crate::utils::{
-    establish_connection,
+    establish_connection, get_is_ajax,
     get_request_user, get_stat_page,
     ErrorParams, TOKEN, UserResp,
 };
@@ -22,6 +22,7 @@ use crate::models::{
     NewServe,
     TechCategories,
     NewTechCategories,
+    Cat,
 };
 use actix_multipart::{Field, Multipart};
 use futures::StreamExt;
@@ -101,10 +102,10 @@ pub struct ServePageData {
 pub struct ServePageResp {
     pub request_user: UserResp,
     pub category:     ServeCategories,
-    pub object:       Serve,
     pub view:         i32,
     pub height:       f64, 
     pub seconds:      i32,
+    pub object:       Serve,
 }
 pub async fn get_serve_page(req: HttpRequest) -> Result<Json<ServePageResp>, Error> {
     let params_some = web::Query::<ServePageData>::from_query(&req.query_string());
@@ -143,17 +144,17 @@ pub async fn get_serve_page(req: HttpRequest) -> Result<Json<ServePageResp>, Err
     return Ok(Json(ServePageResp {
         request_user: get_request_user(&req, is_ajax).await,
         category:     _s_category,
+        view:         _serve.view, 
+        height:       _serve.height, 
+        seconds:      _serve.seconds,
         object:       _serve,
-        view:         _stat.view, 
-        height:       _stat.height, 
-        seconds:      _stat.seconds,
     }));
 }
 
 #[derive(Serialize)]
 pub struct CreateTechCategoriesResp {
     pub request_user: UserResp,
-    pub cats:         Vec<Cat>,
+    pub tech_cats:    Vec<Cat>,
 }
 pub async fn create_tech_categories_page(req: HttpRequest) -> Result<Json<CreateTechCategoriesResp>, Error> {
     let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
@@ -165,7 +166,7 @@ pub async fn create_tech_categories_page(req: HttpRequest) -> Result<Json<Create
     }
 
     let _connection = establish_connection();
-    let _categories = tech_categories
+    let _categories = schema::tech_categories::table
         .load::<TechCategories>(&_connection)
         .expect("E");
 
@@ -227,7 +228,7 @@ pub async fn load_serve_categories_from_level(req: HttpRequest) -> Result<Json<L
     }
 
     return Ok(Json(LoadServeCategoriesResp {
-        serve_cats: ServeCategories::get_categories_from_level(params.level.unwrap()),
+        serve_cats: ServeCategories::get_categories_from_level(&params.level.unwrap()),
     }));
 }
 
@@ -259,7 +260,7 @@ pub async fn load_form_from_level(req: HttpRequest) -> Result<Json<LoadFormCateg
         .load::<TechCategories>(&_connection)
         .expect("E");
 
-    return Ok(Json(LoadServeCategoriesResp {
+    return Ok(Json(LoadFormCategoriesResp {
         tech_cats: _tech_categories,
     }));
 }
@@ -301,7 +302,7 @@ pub struct EditItemData {
     pub id:      Option<i32>,
     pub is_ajax: Option<i16>,
 }
-pub async fn edit_tech_category_page(req: HttpRequest) -> Result<Json<CreateServeCategoryResp>, Error> {
+pub async fn edit_tech_category_page(req: HttpRequest) -> Result<Json<EditTechCategoryResp>, Error> {
     let params_some = web::Query::<EditItemData>::from_query(&req.query_string());
     if params_some.is_err() {
         let body = serde_json::to_string(&ErrorParams {
@@ -328,7 +329,7 @@ pub async fn edit_tech_category_page(req: HttpRequest) -> Result<Json<CreateServ
     let _request_user = get_request_user(&req, is_ajax).await;
     let _connection = establish_connection();
 
-    let _tech_categories = tech_categories
+    let _tech_categories = schema::tech_categories::table
         .load::<TechCategories>(&_connection)
         .expect("E");
 
@@ -357,7 +358,7 @@ pub struct EditServeCategoryResp {
     pub category:     ServeCategories,
     pub tech_cats:    Vec<TechCategories>,
 }
-pub async fn edit_serve_category_page(req: HttpRequest) -> Result<Json<CreateServeCategoryResp>, Error> {
+pub async fn edit_serve_category_page(req: HttpRequest) -> Result<Json<EditServeCategoryResp>, Error> {
     let params_some = web::Query::<EditItemData>::from_query(&req.query_string());
     if params_some.is_err() {
         let body = serde_json::to_string(&ErrorParams {
@@ -384,7 +385,7 @@ pub async fn edit_serve_category_page(req: HttpRequest) -> Result<Json<CreateSer
     let _request_user = get_request_user(&req, is_ajax).await;
     let _connection = establish_connection();
 
-    let _tech_categories = tech_categories
+    let _tech_categories = schema::tech_categories::table
         .load::<TechCategories>(&_connection)
         .expect("E");
 
@@ -415,7 +416,7 @@ pub struct EditServeResp {
     pub serve_cats:   Vec<ServeCategories>,
     pub level:        i16,
 }
-pub async fn edit_serve_page(req: HttpRequest) -> Result<Json<CreateServeCategoryResp>, Error> {
+pub async fn edit_serve_page(req: HttpRequest) -> Result<Json<EditServeResp>, Error> {
     let params_some = web::Query::<EditItemData>::from_query(&req.query_string());
     if params_some.is_err() {
         let body = serde_json::to_string(&ErrorParams {
@@ -442,17 +443,17 @@ pub async fn edit_serve_page(req: HttpRequest) -> Result<Json<CreateServeCategor
     let _request_user = get_request_user(&req, is_ajax).await;
     let _connection = establish_connection();
 
-    let _serve = serve
+    let _serve = schema::serve::table
         .filter(schema::serve::id.eq(params.id.unwrap()))
         .first::<Serve>(&_connection)
         .expect("E");
 
-    let _serve_cat = serve_categories
+    let _serve_cat = schema::serve_categories::table
         .filter(schema::serve_categories::id.eq(&_serve.serve_categories))
         .first::<ServeCategories>(&_connection)
         .expect("E");
 
-    let _level = tech_categories
+    let _level = schema::tech_categories::table
         .filter(schema::tech_categories::id.eq(_serve_cat.tech_categories))
         .select(schema::tech_categories::level)
         .first::<i16>(&_connection)
@@ -519,8 +520,6 @@ pub async fn create_tech_categories(req: HttpRequest, mut payload: Multipart) ->
 
 
 pub async fn create_serve_categories(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
-    use crate::utils::category_form;
-    
     let _request_user = get_request_user(&req, 3).await;
     let user_id = _request_user.id;
     if user_id < 1 {
@@ -531,7 +530,7 @@ pub async fn create_serve_categories(req: HttpRequest, mut payload: Multipart) -
     }
 
     let _connection = establish_connection();
-    let form = category_form(payload.borrow_mut(), user_id).await;
+    let form = crate::utils::serve_category_form(payload.borrow_mut(), user_id).await;
 
     if form.token != TOKEN.to_string() {
         let body = serde_json::to_string(&ErrorParams {
@@ -541,7 +540,7 @@ pub async fn create_serve_categories(req: HttpRequest, mut payload: Multipart) -
     }
 
     let new_cat = NewServeCategories {
-        name: form.name.clone(),
+        name: form.name.clone(), 
         description:     Some(form.description.clone()),
         tech_categories: form.tech_categories,
         position:        form.position,
@@ -587,7 +586,7 @@ pub async fn edit_tech_category(req: HttpRequest, mut payload: Multipart) -> Res
         return Err(Error::BadRequest(body));
     }
 
-    let _category = tech_categories::tech_categories::table
+    let _category = schema::tech_categories::table
         .filter(schema::tech_categories::id.eq(form.id))
         .first::<TechCategories>(&_connection)
         .expect("E");
@@ -789,7 +788,7 @@ pub async fn create_serve(req: HttpRequest, mut payload: Multipart) -> Result<Js
         }).unwrap();
         return Err(Error::BadRequest(body));
     }
-    let form = serve_split_payload(payload.borrow_mut(), user_id).await;
+    let form = serve_split_payload(payload.borrow_mut()).await;
     if form.token != TOKEN.to_string() {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
@@ -875,7 +874,7 @@ pub async fn edit_serve(req: HttpRequest, mut payload: Multipart) -> Result<Json
         .filter(schema::serve::id.eq(form.id))
         .first::<Serve>(&_connection)
         .expect("E");
-    let _category = serve_categories::serve_categories::table
+    let _category = schema::serve_categories::table
         .filter(schema::serve_categories::id.eq(_serve.serve_categories))
         .first::<ServeCategories>(&_connection)
         .expect("E");

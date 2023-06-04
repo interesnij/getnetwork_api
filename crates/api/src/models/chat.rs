@@ -14,9 +14,10 @@ use serde::{Serialize, Deserialize};
 use crate::utils::establish_connection;
 use crate::schema;
 use crate::errors::Error;
+use crate::models::SmallFile;
 
 
-#[derive(Debug ,Queryable, Serialize, Identifiable)]
+#[derive(Debug, Queryable, Serialize, Identifiable)]
 pub struct Chat {
     pub id:      i32,
     pub user_id: i32,

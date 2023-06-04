@@ -85,6 +85,11 @@ impl Cat {
         types:    i16,
         is_admin: bool
     ) -> Vec<Item> {
+        use crate::schema::{
+            category::dsl::category,
+            items::dsl::items,
+        };
+
         let _connection = establish_connection();
         let ids = schema::category::table
             .filter(schema::category::categories_id.eq(self.id))
@@ -493,7 +498,7 @@ impl Categories {
         };
     }
     pub fn get_stat_type(types: i16) -> i16 {
-        return match self.types {
+        return match types {
             1 => 41,
             2 => 61,
             3 => 71,
@@ -1110,19 +1115,20 @@ impl Item {
     }
     pub fn get_contents(&self) -> Vec<ContentBlock> {
         use schema::item_contents::dsl::item_contents;
-
+ 
         let mut stack = Vec::new();
+        let _connection = establish_connection();
         let contents = item_contents
             .filter(schema::items::item_id.eq(self.id))
             .select(( 
-                schema::users::id,
-                schema::users::title,
-                schema::users::content,
-                schema::users::user_id,
-                schema::users::position,
-                schema::users::created,
+                schema::item_contents::id,
+                schema::item_contents::title,
+                schema::item_contents::content,
+                schema::item_contents::user_id,
+                schema::item_contents::position,
+                schema::item_contents::created,
             ))
-            .load::<(i32, String, String, i32, i16, NaiveDateTime)>(&_connection)
+            .load::<(i32, String, String, i32, i16, chrono::NaiveDateTime)>(&_connection)
             .expect("E");
         for c in contents.iter() {
             stack.push(ContentBlock {

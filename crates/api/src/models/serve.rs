@@ -324,6 +324,7 @@ pub struct EditServe {
     pub price:            i32,
     pub man_hours:        i16,
     pub is_default:       bool,
+    pub serve_id:         Option<i32>,
 }
 
 ///////////

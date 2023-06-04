@@ -154,7 +154,7 @@ pub async fn create_order(req: HttpRequest, mut payload: Multipart) -> Result<Js
     };
 
     let _connection = establish_connection();
-    let user_id = get_or_create_cookie_user_id(_connection, &req).await;
+    let user_id = get_or_create_cookie_user_id(&_connection, &req).await;
     let form = order_form(payload.borrow_mut(), user_id).await;
     
     if form.token != TOKEN.to_string() {

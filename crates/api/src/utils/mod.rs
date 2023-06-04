@@ -24,6 +24,7 @@ use crate::diesel::{
     RunQueryDsl,
     ExpressionMethods,
     QueryDsl,
+    ConnectionInfo,
 };
 
 pub static TOKEN: &str = "111";
@@ -125,7 +126,7 @@ pub fn get_stat_page(types: i16, page: i32) -> PageStatData {
 pub struct UserResp {
     pub id:         i32,
     pub username:   String,
-    pub image:      String,
+    pub image:      Option<String>,
     pub perm:       i16,
     pub device:     bool,
     pub categories: (Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>),
@@ -142,11 +143,12 @@ pub struct OwnerResp {
 
 pub async fn get_request_user_id(req: &HttpRequest) -> i32 {
     use actix_web_httpauth::headers::authorization::{Authorization, Bearer};
+    use actix_web::http::header::Header;
 
     return match Authorization::<Bearer>::parse(req) {
         Ok(ok) => {
             let token = ok.as_ref().token().to_string();
-            return match verify_jwt(token, "05uzefittt").await {
+            return match verify_jwt(token, &"05uzefittt".to_string()).await {
                 Ok(ok) => ok.id,
                 Err(_) => 0,
             }
@@ -161,10 +163,10 @@ pub async fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
         return UserResp {
             id:         0,
             username:   "".to_string(),
-            image:      "".to_string(),
+            image:      None,
             perm:       0,
             device:     true,
-            categories: (),
+            categories: (Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>), 
         };
     }
     let user_id = get_request_user_id(&req).await;
@@ -190,7 +192,7 @@ pub async fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
     return UserResp {
         id:         0,
         username:   "".to_string(),
-        image:      "".to_string(),
+        image:      None,
         perm:       0,
         device:     is_desctop(&req),
         categories: get_categories_2(is_ajax),

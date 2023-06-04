@@ -145,7 +145,7 @@ pub async fn history_page(req: HttpRequest) -> Result<Json<HistoryPageResp>, Err
     use crate::utils::get_or_create_cookie_user_id;
 
     let _connection = establish_connection();
-    let user_id = get_or_create_cookie_user_id(_connection, &req).await;
+    let user_id =  get_or_create_cookie_user_id(&_connection, &req).await;
         
     let _cookie_user = cookie_users
         .filter(schema::cookie_users::id.eq(&user_id))
@@ -333,14 +333,14 @@ pub async fn get_serve_page(req: HttpRequest) -> Result<Json<ServeResp>, Error> 
     use crate::schema::serve::dsl::serve;
 
     let _connection = establish_connection();
-    let serve = serve
+    let _serve = serve
         .filter(schema::serve::id.eq(params.id.unwrap()))
         .first::<Serve>(&_connection)
         .expect("E."); 
 
     return Ok(Json(ServeResp {
         request_user: get_request_user(&req, 2).await,
-        object:       serve,
+        object:       _serve,
     }));
 }
 
