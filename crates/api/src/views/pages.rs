@@ -1254,10 +1254,7 @@ async fn item_categories_page (
     let is_superuser = _request_user.perm == 60;
 
     let cats_res = block(move || Categories::get_categories_for_types(types)).await?;
-    _cats = match cats_res {
-        Ok(_ok) => _ok,
-        Err(_error) => Vec::new(),
-    };
+    _cats = block(move || Categories::get_categories_for_types(types)).await.expect("R.");
 
     let tags_res = block(move || Categories::get_tags(types)).await?;
     _tags = match tags_res {
