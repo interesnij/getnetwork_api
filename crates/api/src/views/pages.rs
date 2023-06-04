@@ -140,12 +140,12 @@ pub struct HistoryPageResp {
     pub object_list:      Vec<CookieStat>,
     pub next_page_number: i16,
 }
-pub async fn history_page(req: HttpRequest) -> Result<Json<HistoryPageResp>, Error> {
+pub async fn history_page(conn: ConnectionInfo, req: HttpRequest) -> Result<Json<HistoryPageResp>, Error> {
     use schema::cookie_users::dsl::cookie_users;
     use crate::utils::get_or_create_cookie_user_id;
 
     let _connection = establish_connection();
-    let user_id =  get_or_create_cookie_user_id(&_connection, &req).await;
+    let user_id =  get_or_create_cookie_user_id(conn, &req).await;
         
     let _cookie_user = cookie_users
         .filter(schema::cookie_users::id.eq(&user_id))
@@ -1247,7 +1247,7 @@ async fn item_categories_page (
             });
         }
         categories.push( CatDataResp {
-            category:    cat,
+            category:    cat.clone(),
             object_list: stack,
 
         });
