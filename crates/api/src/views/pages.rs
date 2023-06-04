@@ -895,7 +895,7 @@ pub struct CatDataResp {
 #[derive(Serialize)]
 pub struct CategoriesPageResp {
     pub request_user: UserResp,
-    pub categories:   Vec<CatDataResp>,
+    pub categories:   Vec<&CatDataResp>,
     pub cats:         Vec<Cat>,
     pub all_tags:     Vec<SmallTag>,
     pub view:         i32,
@@ -1281,7 +1281,7 @@ async fn item_categories_page (
                 image:       i.get_image(),
             });
             categories.push( CatDataResp {
-                category:    &cat,
+                category:    cat,
                 object_list: stack,
 
             });
