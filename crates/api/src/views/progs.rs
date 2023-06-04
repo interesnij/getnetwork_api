@@ -1,9 +1,7 @@
-use actix::Addr;
 use actix_web::{
     HttpRequest,
-    HttpResponse,
     web,
-    web::{block, Data, Json},
+    web::{block, Json},
 };
 use crate::schema;
 use crate::models::{
@@ -25,8 +23,7 @@ use crate::utils::{
     establish_connection,
     get_cookie_user_id,
     get_request_user_id,
-    get_request_user, get_is_ajax,
-    ErrorParams, TOKEN, UserResp,
+    ErrorParams, TOKEN,
 };
 use crate::diesel::{
     RunQueryDsl,
@@ -279,7 +276,6 @@ pub async fn create_feedback(req: HttpRequest, conn: ConnectionInfo, mut payload
         return Err(Error::BadRequest(body));
     }
 
-    use crate::schema::{feedbacks, users};
     use crate::models::NewFeedback;
     use crate::utils::feedback_form;
 
@@ -507,11 +503,6 @@ pub async fn edit_item(req: HttpRequest, mut payload: Multipart) -> Result<Json<
     };
 
     use crate::models::{
-        NewTechCategoriesItem,
-        Serve,
-        NewServeItems,
-        NewCategory,
-        NewTagItems,
         EditItem,
     };
 

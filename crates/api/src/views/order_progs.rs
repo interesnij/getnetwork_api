@@ -1,8 +1,7 @@
 use actix_web::{
     HttpRequest,
-    HttpResponse,
     web,
-    web::{block, Data, Json},
+    web::Json,
 };
 use std::borrow::BorrowMut;
 use crate::diesel::{
@@ -16,7 +15,6 @@ use crate::utils::{
     get_or_create_cookie_user_id,
     get_cookie_user_id,
     ErrorParams, TOKEN, UserResp, 
-    InfoParams,
 };
 use crate::schema;
 use crate::models::{
@@ -27,8 +25,6 @@ use crate::models::{
 };
 use serde::{Deserialize, Serialize};
 use actix_multipart::Multipart;
-use crate::models::User;
-use actix_web::dev::ConnectionInfo;
 use crate::errors::Error;
 
 
@@ -99,8 +95,6 @@ pub struct OrderPageData {
     pub id:      Option<i32>,
 }
 pub async fn get_order_page(req: HttpRequest) -> Result<Json<OrderPageResp>, Error> {
-    use schema::orders::dsl::orders;
-
     let params_some = web::Query::<OrderPageData>::from_query(&req.query_string());
     if params_some.is_err() {
         let body = serde_json::to_string(&ErrorParams {

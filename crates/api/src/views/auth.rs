@@ -2,26 +2,21 @@ use actix_web::{
     HttpRequest,
     HttpResponse,
     web,
-    web::{block, Data, Json},
+    web::Json,
 };
 use serde::{Deserialize, Serialize};
 use crate::utils::{
     establish_connection, is_desctop,
     gen_jwt, get_request_user_id, get_categories_2,
-    ErrorParams, TOKEN, UserResp,
+    ErrorParams, TOKEN,
 };
 use bcrypt::{hash, verify};
 use crate::diesel::{
     RunQueryDsl,
-    ExpressionMethods,
-    QueryDsl,
 };
 use crate::schema;
-use futures::StreamExt;
 use crate::models::{User, NewUser, Cat};
 use crate::errors::Error;
-use actix_multipart::{Field, Multipart};
-use std::borrow::BorrowMut;
 use crate::AppState;
 
 

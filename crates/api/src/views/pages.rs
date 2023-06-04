@@ -1,33 +1,29 @@
-use actix::Addr;
 use actix_web::{
     HttpRequest,
-    HttpResponse,
     web,
-    web::{block, Data, Json},
+    web::{block, Json},
     Result,
 };
 use crate::schema;
 use crate::models::{
-    User, Item, Categories, Feedback, CookieUser,
-    Tag, StatPage, Cat, SmallTag, CatDetail, Serve,
+    Item, Categories, Feedback, CookieUser,
+    Tag, Cat, SmallTag, CatDetail, Serve,
     Blog, Service, Store, Wiki, Work, ContentBlock,
     ServeCategories, TechCategories, CookieStat,
-    SmallFile, File,
+    SmallFile, File, FeaturedItem,
 };
 use crate::utils::{
-    establish_connection, get_request_user, is_desctop,
-    get_categories_2, get_stat_page, get_is_ajax_page, 
+    establish_connection, get_request_user,
+    get_stat_page, get_is_ajax_page, 
     get_is_ajax, get_page,
-    IsAjaxData, IsAjaxPageData, IndexResponse, ErrorParams, 
-    TOKEN, UserResp, PageStatData,  OwnerResp,
+    IndexResponse, ErrorParams, 
+    TOKEN, UserResp,  OwnerResp,
 };
 use crate::diesel::{
     RunQueryDsl,
     ExpressionMethods,
     QueryDsl,
 };
-use actix_web::dev::ConnectionInfo;
-use serde_json::to_value;
 use serde::{Deserialize, Serialize};
 use crate::errors::Error;
 
@@ -119,8 +115,6 @@ pub struct AboutPageResp {
     pub seconds:      i32,
 } 
 pub async fn info_page(req: HttpRequest) -> Result<Json<AboutPageResp>, Error> {
-    use crate::utils::get_is_ajax;
-
     let _connection = establish_connection();
     let _stat = get_stat_page(2, 0);
 
@@ -148,8 +142,7 @@ pub struct HistoryPageResp {
 }
 pub async fn history_page(req: HttpRequest) -> Result<Json<HistoryPageResp>, Error> {
     use schema::cookie_users::dsl::cookie_users;
-    use crate::models::{CookieUser, CookieStat};
-    use crate::utils::{get_is_ajax_page, get_or_create_cookie_user_id};
+    use crate::utils::get_or_create_cookie_user_id;
 
     let _connection = establish_connection();
     let user_id = get_or_create_cookie_user_id(_connection, &req).await;
@@ -186,8 +179,6 @@ pub async fn feedback_list_page(req: HttpRequest) -> Result<Json<FeedbackListRes
     let (is_ajax, page) = get_is_ajax_page(&req);
     let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.perm > 59 {
-        use crate::utils::get_is_ajax_page;
-
         let object_list: Vec<Feedback>;
         let next_page_number: i16;
         let _res = block(move || Feedback::get_list(page, 20)).await?;
@@ -216,9 +207,7 @@ pub struct ServeListResp {
     pub tech_cats:    Vec<TechCategories>,
 }
 pub async fn serve_list_page(req: HttpRequest) -> Result<Json<ServeListResp>, Error> {
-    use crate::models::TechCategories;
     use crate::schema::tech_categories::dsl::tech_categories;
-    use crate::utils::get_is_ajax;
 
     let _connection = establish_connection();
     let tech_cats = tech_categories
@@ -259,7 +248,6 @@ pub async fn get_tech_category_page(req: HttpRequest) -> Result<Json<TechCategor
         return Err(Error::BadRequest(body));
     }
 
-    use crate::models::TechCategories;
     use crate::schema::tech_categories::dsl::tech_categories;
 
     let _connection = establish_connection();
@@ -301,7 +289,6 @@ pub async fn get_serve_category_page(req: HttpRequest) -> Result<Json<ServeCateg
         return Err(Error::BadRequest(body));
     }
 
-    use crate::models::ServeCategories;
     use crate::schema::serve_categories::dsl::serve_categories;
 
     let _connection = establish_connection();
@@ -343,7 +330,6 @@ pub async fn get_serve_page(req: HttpRequest) -> Result<Json<ServeResp>, Error> 
         return Err(Error::BadRequest(body));
     }
 
-    use crate::models::Serve;
     use crate::schema::serve::dsl::serve;
 
     let _connection = establish_connection();
@@ -365,9 +351,6 @@ pub struct CookieUsersResp {
     pub next_page_number: i16,
 }
 pub async fn cookie_users_list_page(req: HttpRequest) -> Result<Json<CookieUsersResp>, Error> {
-    use crate::utils::get_is_ajax_page;
-    use crate::models::CookieUser;
-
     let (is_ajax, page) = get_is_ajax_page(&req);
     let _connection = establish_connection();
 
@@ -459,7 +442,6 @@ pub async fn get_tech_objects_page(req: HttpRequest) -> Result<Json<TechObjectsR
         return Err(Error::BadRequest(body));
     }
 
-    use crate::models::TechCategories;
     use crate::schema::tech_categories::dsl::tech_categories;
 
     let is_admin = get_request_user(&req, 2).await.perm > 59;
@@ -742,7 +724,6 @@ pub async fn edit_file_page(req: HttpRequest) -> Result<Json<EditFileResp>, Erro
     }
     
     use crate::schema::files::dsl::files;
-    use crate::models::File;
 
     let _connection = establish_connection();
     let _file = files
@@ -772,7 +753,6 @@ pub async fn image_page(req: HttpRequest) -> Result<Json<ImageResp>, Error> {
         files::dsl::files,
         items::dsl::items,
     };
-    use crate::models::File;
 
     let params_some = web::Query::<ImageData>::from_query(&req.query_string());
     if params_some.is_err() {
@@ -1110,7 +1090,6 @@ async fn item_category_page (
 ) -> Result<Json<CategoryPageResp>, Error> {
     // получаем детали страницы универсальной категории
     use crate::schema::categories::dsl::categories;
-    use crate::utils::{is_desctop, get_page};
 
     let params_some = web::Query::<CategoryDetailData>::from_query(&req.query_string());
     if params_some.is_err() {
@@ -1237,9 +1216,7 @@ async fn item_categories_page (
     types: i16,
 ) -> Result<Json<CategoriesPageResp>, Error> {
     // получаем детали страницы категорий по типу
-    use crate::utils::{is_desctop, get_stat_page};
     use crate::schema::stat_pages::dsl::stat_pages;
-    use crate::models::StatPage;
 
     let _connection = establish_connection();
     let _stat = stat_pages
