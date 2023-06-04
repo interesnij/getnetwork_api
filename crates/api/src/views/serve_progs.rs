@@ -459,7 +459,7 @@ pub async fn edit_serve_page(req: HttpRequest) -> Result<Json<EditServeResp>, Er
         .first::<i16>(&_connection)
         .expect("E.");
 
-    let _serve_cats = ServeCategories::get_categories_from_level(_level);
+    let _serve_cats = ServeCategories::get_categories_from_level(&_level);
 
     if _request_user.username.is_empty() && _serve.user_id != _request_user.id && _request_user.perm != 60 {
         let body = serde_json::to_string(&ErrorParams {
@@ -638,7 +638,7 @@ pub async fn edit_serve_category(req: HttpRequest, mut payload: Multipart) -> Re
         return Err(Error::BadRequest(body));
     }
 
-    let s_category = serve_categories::serve_categories::table
+    let s_category = schema::serve_categories::table
         .filter(schema::serve_categories::id.eq(form.id))
         .first::<ServeCategories>(&_connection)
         .expect("E");
@@ -911,14 +911,15 @@ pub async fn edit_serve(req: HttpRequest, mut payload: Multipart) -> Result<Json
         }
     }
 
-    let __serve = crate::models::EditServe {
-        name:        form.name.clone(),
-        description: Some(form.description.clone()),
-        position:    form.position,
-        price:       form.price,
-        man_hours:   form.man_hours,
-        is_default:  is_default,
-        serve_id:    form.serve_id,
+    let __serve = crate::models::EditServe { 
+        name:             form.name.clone(),
+        description:      Some(form.description.clone()),
+        position:         form.position,
+        serve_categories: form.serve_categories,
+        price:            form.price,
+        man_hours:        form.man_hours,
+        is_default:       is_default,
+        serve_id:         form.serve_id,
     };
 
     diesel::update(&_serve)

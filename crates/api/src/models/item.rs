@@ -1092,6 +1092,7 @@ impl Item {
     pub fn get_owner(id: i32) -> OwnerResp {
         use schema::users::dsl::users;
 
+        let _connection = establish_connection();
         let user_ok = users
             .filter(schema::users::id.eq(id))
             .select((
@@ -1119,7 +1120,7 @@ impl Item {
         let mut stack = Vec::new();
         let _connection = establish_connection();
         let contents = item_contents
-            .filter(schema::items::item_id.eq(self.id))
+            .filter(schema::item_contents::item_id.eq(self.id))
             .select(( 
                 schema::item_contents::id,
                 schema::item_contents::title,
