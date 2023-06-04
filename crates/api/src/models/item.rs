@@ -91,7 +91,7 @@ impl Cat {
         };
 
         let _connection = establish_connection();
-        let ids = schema::category::table
+        let ids = category
             .filter(schema::category::categories_id.eq(self.id))
             .filter(schema::category::types.eq(types))
             .select(schema::category::item_id)
@@ -1189,6 +1189,7 @@ impl Item {
                 2 => videos.push(file.clone()),
                 3 => audios.push(file.clone()),
                 4 => docs.push(file.clone()),
+                _ => todo!(),
             };
         }
         return (photos, videos, audios, docs);

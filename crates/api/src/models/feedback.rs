@@ -7,7 +7,6 @@ use diesel::{
     Queryable,
     Insertable,
     RunQueryDsl,
-    ExpressionMethods,
     QueryDsl,
 };
 

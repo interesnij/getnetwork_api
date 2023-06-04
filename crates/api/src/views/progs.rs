@@ -267,7 +267,7 @@ pub async fn object_history(conn: ConnectionInfo, req: HttpRequest, id: web::Pat
     })
 }
 
-pub async fn create_feedback(req: HttpRequest, conn: ConnectionInfo, mut payload: actix_multipart::Multipart) -> Result<Json<i16>, Error> {
+pub async fn create_feedback(req: HttpRequest, mut payload: actix_multipart::Multipart) -> Result<Json<i16>, Error> {
     let form = feedback_form(payload.borrow_mut()).await;
     if form.token != TOKEN.to_string() {
         let body = serde_json::to_string(&ErrorParams {

@@ -22,7 +22,6 @@ use crate::models::{
     NewServe,
     TechCategories,
     NewTechCategories,
-    Cat,
 };
 use actix_multipart::{Field, Multipart};
 use futures::StreamExt;

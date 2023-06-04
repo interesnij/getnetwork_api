@@ -258,7 +258,6 @@ pub async fn tag_blogs_page(req: HttpRequest) -> Result<Json<TagBlogsPageResp>, 
         .expect("E");
 
     let (_blogs, next_page_number) = Item::get_blogs_list_for_ids(page, 20, &_tag_items, _request_user.perm == 60);
-    let blogs_count = _tag_items.len();
 
     return Ok(Json(TagBlogsPageResp {
         request_user:     _request_user,
@@ -322,7 +321,6 @@ pub async fn tag_services_page(req: HttpRequest) -> Result<Json<TagServicesPageR
         .expect("E");
 
     let (_services, next_page_number) = Item::get_services_list_for_ids(page, 20, &_tag_items, _request_user.perm == 60);
-    let services_count = _tag_items.len();
 
     return Ok(Json(TagServicesPageResp {
         request_user:     _request_user,
@@ -386,7 +384,6 @@ pub async fn tag_stores_page(req: HttpRequest) -> Result<Json<TagStoresPageResp>
         .expect("E");
 
     let (_stores, next_page_number) = Item::get_stores_list_for_ids(page, 20, &_tag_items, _request_user.perm == 60);
-    let stores_count = _tag_items.len();
 
     return Ok(Json(TagStoresPageResp {
         request_user:     _request_user,
@@ -450,7 +447,6 @@ pub async fn tag_wikis_page(req: HttpRequest) -> Result<Json<TagWikisPageResp>, 
         .expect("E");
 
     let (_wikis, next_page_number) = Item::get_wikis_list_for_ids(page, 20, &_tag_items, _request_user.perm == 60);
-    let wikis_count = _tag_items.len();
 
     return Ok(Json(TagWikisPageResp {
         request_user:     _request_user,
@@ -514,7 +510,6 @@ pub async fn tag_works_page(req: HttpRequest) -> Result<Json<TagWorksPageResp>, 
         .expect("E");
 
     let (_works, next_page_number) = Item::get_works_list_for_ids(page, 20, &_tag_items, _request_user.perm == 60);
-    let works_count = _tag_items.len();
 
     return Ok(Json(TagWorksPageResp {
         request_user:     _request_user,
@@ -578,7 +573,6 @@ pub async fn tag_helps_page(req: HttpRequest) -> Result<Json<TagHelpsPageResp>, 
         .expect("E");
 
     let (_helps, next_page_number) = Item::get_helps_list_for_ids(page, 20, &_tag_items, _request_user.perm == 60);
-    let helps_count = _tag_items.len();
 
     return Ok(Json(TagHelpsPageResp {
         request_user:     _request_user,

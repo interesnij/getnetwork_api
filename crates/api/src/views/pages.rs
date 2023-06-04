@@ -14,10 +14,8 @@ use crate::models::{
 };
 use crate::utils::{
     establish_connection, get_request_user,
-    get_stat_page, get_is_ajax_page, 
-    get_is_ajax, get_page,
-    ErrorParams, 
-    UserResp,  OwnerResp,
+    get_stat_page, get_is_ajax_page, get_is_ajax,
+    ErrorParams, UserResp, OwnerResp,
 };
 use crate::diesel::{
     RunQueryDsl,
@@ -446,7 +444,6 @@ pub async fn get_tech_objects_page(req: HttpRequest) -> Result<Json<TechObjectsR
     use crate::schema::tech_categories::dsl::tech_categories;
 
     let _request_user = get_request_user(&req, 2).await;
-    let is_admin = _request_user.perm > 59;
     let _connection = establish_connection();
     let _cat = tech_categories
         .filter(schema::tech_categories::id.eq(params.id.unwrap()))
@@ -902,8 +899,7 @@ pub struct ItemDetailResp {
 }
 fn get_item_data(object: Item, perm: i16) -> ItemDetailResp {
     // получаем детали универсального объекта
-    let types = object.types;
-    if object.item_types < 10 && perm < 10 {
+    if object.types < 10 && perm < 10 {
         return ItemDetailResp {
             id:          object.id,
             slug:        object.slug.clone(),

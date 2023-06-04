@@ -93,7 +93,7 @@ pub fn get_stat_page(types: i16, page: i32) -> PageStatData {
     else {
         let _connection = establish_connection();
         return schema::stat_pages::table
-            .filter(schema::stat_pages::types.eq(1))
+            .filter(schema::stat_pages::types.eq(types))
             .select((
                 schema::stat_pages::view,
                 schema::stat_pages::height,
@@ -268,7 +268,6 @@ fn get_cookie<'a>(req: &'a HttpRequest) -> Option<&'a str> {
 }
 
 pub async fn get_cookie_user_id(req: &HttpRequest) -> i32 {
-    let user_id: i32;
     let cookie_some = get_cookie(req);
     if cookie_some.is_none() {
         return 0;
