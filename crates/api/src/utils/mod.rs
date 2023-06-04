@@ -58,7 +58,8 @@ pub fn get_stat_page(types: i16, page: i32) -> PageStatData {
         };
     } 
     else {
-        return stat_pages
+        let _connection = establish_connection();
+        return schema::stat_pages::table
             .filter(schema::stat_pages::types.eq(1))
             .select((
                 schema::stat_pages::view,
@@ -119,7 +120,8 @@ pub async fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
     let user_id = get_request_user_id(&req).await;
     if user_id > 0 {
         use crate::schema::users::dsl::users;
-
+        
+        let _connection = establish_connection();
         let user = users
             .filter(schema::users::id.eq(user_id))
             .first::<User>(&_connection)

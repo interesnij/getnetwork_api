@@ -169,7 +169,7 @@ pub async fn content_form(payload: &mut Multipart) -> ContentForm {
     };
     while let Some(item) = payload.next().await {
         let mut field: Field = item.expect("split_payload err");
-        if name == "id" {
+        if field.name == "id" {
             while let Some(chunk) = field.next().await {
                 let data = chunk.expect("split_payload err chunk");
                 if let Ok(s) = str::from_utf8(&data) {
@@ -178,7 +178,7 @@ pub async fn content_form(payload: &mut Multipart) -> ContentForm {
                 }
             }
         }
-        else if name == "content" {
+        else if field.name == "content" {
             while let Some(chunk) = field.next().await {
                 let data = chunk.expect("split_payload err chunk");
                 if let Ok(s) = str::from_utf8(&data) {
@@ -187,7 +187,7 @@ pub async fn content_form(payload: &mut Multipart) -> ContentForm {
                 }
             }
         }
-        else if name == "token" {
+        else if field.name == "token" {
             while let Some(chunk) = field.next().await {
                 let data = chunk.expect("split_payload err chunk");
                 if let Ok(s) = str::from_utf8(&data) {
@@ -566,7 +566,7 @@ pub async fn files_form(payload: &mut Multipart, owner_id: i32) -> FileForm {
                 }
             }
         }
-        else if name == "token" {
+        else if field.name == "token" {
             while let Some(chunk) = field.next().await {
                 let data = chunk.expect("split_payload err chunk");
                 if let Ok(s) = str::from_utf8(&data) {
