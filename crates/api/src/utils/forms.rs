@@ -602,9 +602,8 @@ pub async fn serve_category_form(payload: &mut Multipart, _owner_id: i32) -> Ser
 
     while let Some(item) = payload.next().await {
         let mut field: Field = item.expect("split_payload err");
-        let name = field.name();
 
-        if name == "id" {
+        if field.name() == "id" {
             while let Some(chunk) = field.next().await {
                 let data = chunk.expect("split_payload err chunk");
                 if let Ok(s) = str::from_utf8(&data) {
@@ -613,7 +612,7 @@ pub async fn serve_category_form(payload: &mut Multipart, _owner_id: i32) -> Ser
                 }
             }
         }
-        if name == "tech_categories" {
+        if field.name() == "tech_categories" {
             while let Some(chunk) = field.next().await {
                 let data = chunk.expect("split_payload err chunk");
                 if let Ok(s) = str::from_utf8(&data) {
@@ -622,7 +621,7 @@ pub async fn serve_category_form(payload: &mut Multipart, _owner_id: i32) -> Ser
                 }
             }
         }
-        else if name == "position" {
+        else if field.name() == "position" {
             while let Some(chunk) = field.next().await {
                 let data = chunk.expect("split_payload err chunk");
                 if let Ok(s) = str::from_utf8(&data) {
@@ -631,7 +630,7 @@ pub async fn serve_category_form(payload: &mut Multipart, _owner_id: i32) -> Ser
                 }
             }
         }
-        else if name == "default_price" {
+        else if field.name() == "default_price" {
             while let Some(chunk) = field.next().await {
                 let data = chunk.expect("split_payload err chunk");
                 if let Ok(s) = str::from_utf8(&data) {

@@ -154,7 +154,7 @@ pub async fn get_serve_page(req: HttpRequest) -> Result<Json<ServePageResp>, Err
 #[derive(Serialize)]
 pub struct CreateTechCategoriesResp {
     pub request_user: UserResp,
-    pub tech_cats:    Vec<Cat>,
+    pub tech_cats:    Vec<TechCategories>,
 }
 pub async fn create_tech_categories_page(req: HttpRequest) -> Result<Json<CreateTechCategoriesResp>, Error> {
     let _request_user = get_request_user(&req, get_is_ajax(&req)).await;

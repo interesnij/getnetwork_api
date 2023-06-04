@@ -4,6 +4,13 @@ use diesel::{Queryable, Insertable};
 use serde::{Serialize, Deserialize};
 use crate::errors::Error;
 use crate::utils::establish_connection;
+use diesel::{
+    Queryable,
+    Insertable,
+    RunQueryDsl,
+    ExpressionMethods,
+    QueryDsl,
+};
 
 
 #[derive(Debug ,Queryable, Serialize, Identifiable)]

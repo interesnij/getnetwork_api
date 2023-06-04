@@ -417,9 +417,9 @@ pub async fn get_user_history_page(req: HttpRequest) -> Result<Json<UserHistoryR
 
 #[derive(Serialize)]
 pub struct TechObjectsResp {
-    pub request_user: UserResp,
     pub object:       TechCategories,
     pub is_admin:     bool,
+    pub request_user: UserResp,
 }
 #[derive(Deserialize)]
 pub struct TechObjectsData {
@@ -453,9 +453,9 @@ pub async fn get_tech_objects_page(req: HttpRequest) -> Result<Json<TechObjectsR
         .expect("E.");
     
     return Ok(Json(TechObjectsResp {
-        request_user: _request_user,
         object:       _cat,
         is_admin:     _request_user.perm > 59,
+        request_user: _request_user,
     }));
 }
 
