@@ -43,7 +43,7 @@ pub struct IncommingUserResp<'a> {
     pub image:      Option<String>,
     pub perm:       i16,
     pub device:     bool,
-    pub categories: (Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>),
+    pub categories: (Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>),
 }
 
 pub async fn login (

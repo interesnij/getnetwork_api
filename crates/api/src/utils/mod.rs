@@ -123,13 +123,13 @@ pub fn get_stat_page(types: i16, page: i32) -> PageStatData {
 }
 
 #[derive(Serialize)]
-pub struct UserResp<'a> {
+pub struct UserResp {
     pub id:         i32,
     pub username:   String,
     pub image:      Option<String>,
     pub perm:       i16,
     pub device:     bool,
-    pub categories: (Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>),
+    pub categories: (Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>),
 }
 #[derive(Serialize, Queryable)]
 pub struct OwnerResp {
@@ -166,7 +166,7 @@ pub async fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
             image:      None,
             perm:       0,
             device:     true,
-            categories: (Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>), 
+            categories: (Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>, Vec<Cat>), 
         };
     }
     let user_id = get_request_user_id(&req).await;
