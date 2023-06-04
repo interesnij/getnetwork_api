@@ -604,7 +604,7 @@ pub async fn edit_category_page(req: HttpRequest) -> Result<Json<EditCategoryRes
         .expect("E");
     let _cat = schema::categories::table
         .filter(schema::categories::id.eq(params.id.unwrap()))
-        .load::<Categories>(&_connection)
+        .first::<Categories>(&_connection)
         .expect("E");
 
     return Ok(Json(EditCategoryResp {
@@ -690,7 +690,7 @@ pub async fn edit_item_page(req: HttpRequest) -> Result<Json<EditItemResp>, Erro
         .expect("E");
     let object = schema::items::table
         .filter(schema::items::id.eq(params.id.unwrap()))
-        .load::<Item>(&_connection)
+        .first::<Item>(&_connection)
         .expect("E");
 
     return Ok(Json(EditItemResp {
@@ -1267,7 +1267,8 @@ async fn item_categories_page (
     };
 
     let mut categories: Vec<CatDataResp> = Vec::new();
-    for cat in &_cats.iter() {
+    let _cats_2 = _cats.clone();
+    for cat in _cats_2.iter() {
         let mut stack = Vec::new();
         for i in cat.get_items_list(6, types, is_superuser).iter() {
             stack.push( ItemResp {
