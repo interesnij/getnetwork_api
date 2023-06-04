@@ -49,6 +49,56 @@ pub struct PageStatData {
     pub seconds: i32,
 }
 
+pub async fn get_cookie_user_id(req: &HttpRequest) -> i32 {
+    let mut user_id = 0;
+    for header in req.headers().into_iter() {
+        if header.0 == "cookie" {
+            let str_cookie = header.1.to_str().unwrap();
+            let _cookie: Vec<&str> = str_cookie.split(";").collect();
+            for c in _cookie.iter() {
+                let split_c: Vec<&str> = c.split("=").collect();
+                if split_c[0] == "user" {
+                    user_id = split_c[1].parse().unwrap();
+                }
+                println!("name {:?}", split_c[0].trim());
+                println!("value {:?}", split_c[1]);
+            }
+        }
+    };
+    user_id
+}
+pub async fn get_or_create_cookie_user_id(conn: ConnectionInfo, req: &HttpRequest) -> i32 {
+    let mut user_id = 0;
+    for header in req.headers().into_iter() {
+        if header.0 == "cookie" {
+            let str_cookie = header.1.to_str().unwrap();
+            let _cookie: Vec<&str> = str_cookie.split(";").collect();
+            for c in _cookie.iter() {
+                let split_c: Vec<&str> = c.split("=").collect();
+                if split_c[0] == "user" {
+                    user_id = split_c[1].parse().unwrap();
+                }
+                println!("name {:?}", split_c[0].trim());
+                println!("value {:?}", split_c[1]);
+            }
+        }
+    };
+    if user_id == 0 {
+        use crate::views::create_c_user;
+
+        let user = create_c_user(conn, &req).await;
+        user_id = user.id;
+    }
+    else {
+        use crate::views::get_c_user;
+
+        let user = get_c_user(conn, user_id, &req).await;
+        user_id = user.id;
+    }
+    user_id
+}
+
+
 pub fn get_stat_page(types: i16, page: i32) -> PageStatData {
     if page > 1 {
         return PageStatData {

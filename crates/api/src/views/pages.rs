@@ -375,7 +375,7 @@ pub struct UserHistoryData {
     pub page:    Option<i32>,
 }
 pub async fn get_user_history_page(req: HttpRequest) -> Result<Json<UserHistoryResp>, Error> {
-    let (is_ajax, page) = get_is_ajax_page(&req)
+    let (is_ajax, page) = get_is_ajax_page(&req);
     let _request_user = get_request_user(&req, is_ajax).await;
     if _request_user.perm < 60 {
         let body = serde_json::to_string(&ErrorParams {

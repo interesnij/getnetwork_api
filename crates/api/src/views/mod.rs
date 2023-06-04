@@ -4,6 +4,7 @@ pub mod progs;
 pub mod auth;
 pub mod tag_progs;
 pub mod search_progs;
+pub mod serve_progs;
 
 pub use self::{
     order_progs::*,
@@ -11,5 +12,6 @@ pub use self::{
     progs::*,
     tag_progs::*,
     search_progs::*,
+    serve_progs::*,
     auth::*,
 };
