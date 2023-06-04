@@ -43,11 +43,12 @@ pub struct LoginUser2 {
 
 #[derive(Serialize)]
 pub struct IncommingUserResp {
+    pub taken:      String,
     pub username:   String,
     pub image:      String,
     pub perm:       i16,
     pub device:     bool,
-    pub categories: (),
+    pub categories: (Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>),
 }
 
 pub async fn login (
@@ -121,7 +122,7 @@ pub struct NewUserForm {
     pub last_name:  Option<String>,
     pub username:   Option<String>,
     pub email:      Option<String>,
-    pub password:   Option<i16>, 
+    pub password:   Option<String>, 
 }
 
 pub async fn process_signup (
@@ -156,10 +157,10 @@ pub async fn process_signup (
     else {
         let _connection = establish_connection();
         let form_user = NewUser {
-            first_name: data.first_name.clone(),
-            last_name:  data.last_name.clone(),
-            username:   data.username.clone(),
-            email:      data.email.clone(),
+            first_name: data.first_name.as_deref().unwrap().to_string(),
+            last_name:  data.last_name.as_deref().unwrap().to_string(),
+            username:   data.username.as_deref().unwrap().to_string(),
+            email:      data.password.as_deref().unwrap().to_string(),
             password:   hash(data.password.as_deref().unwrap(), 8).unwrap(),
             bio:        None,
             image:      None,
