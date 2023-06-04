@@ -236,6 +236,7 @@ pub fn get_price_acc_values(price: &i32) -> Option<i32> {
                     4 => _wiki_cats.push(cat.clone()),
                     5 => _work_cats.push(cat.clone()),
                     6 => _help_cats.push(cat.clone()),
+                    _ => todo!(),
                 };
             }
 

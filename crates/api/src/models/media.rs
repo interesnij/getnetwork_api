@@ -31,7 +31,7 @@ use crate::schema::files;
 // 3. audios
 // 4. docs
 
-#[derive(Serialize, Queryable)]
+#[derive(Serialize, Queryable, Clone)]
 pub struct SmallFile {
     pub id:          i32,
     pub types:       i16,

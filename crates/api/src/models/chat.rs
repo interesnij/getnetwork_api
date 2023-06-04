@@ -53,7 +53,7 @@ pub struct Message {
 }
 
 impl Message {
-    pub fn get_files(&self) -> (Vec<&SmallFile>, Vec<&SmallFile>, Vec<&SmallFile>, Vec<&SmallFile>) { 
+    pub fn get_files(&self) -> (Vec<SmallFile>, Vec<SmallFile>, Vec<SmallFile>, Vec<SmallFile>) { 
         use schema::files::dsl::files;
 
         let mut photos = Vec::new();
