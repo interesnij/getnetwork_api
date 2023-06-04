@@ -1356,7 +1356,7 @@ impl Item {
             .distinct()
             .load::<i32>(&_connection)
             .expect("E.");
-
+        let count = item_ids.len();
         if is_admin {
              return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1373,7 +1373,7 @@ impl Item {
                     schema::items::created,
                 ))
                 .load::<Blog>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
         } else {
             return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1390,7 +1390,7 @@ impl Item {
                     schema::items::created,
                 ))
                 .load::<Blog>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
         }
     }
 
@@ -1458,7 +1458,7 @@ impl Item {
             .distinct()
             .load::<i32>(&_connection)
             .expect("E.");
-
+        let count = item_ids.len();
         if is_admin {
              return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1474,7 +1474,7 @@ impl Item {
                     schema::items::title,
                 ))
                 .load::<Service>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
         } else {
             return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1491,7 +1491,7 @@ impl Item {
                     schema::items::title,
                 ))
                 .load::<Service>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
         }
     }
 
@@ -1563,6 +1563,7 @@ impl Item {
             .distinct()
             .load::<i32>(&_connection)
             .expect("E.");
+        let count = item_ids.len();
         if is_admin {
             return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1580,7 +1581,7 @@ impl Item {
                     schema::items::price_acc.nullable(),
                 ))
                 .load::<Store>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
         } else {
             return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1599,7 +1600,7 @@ impl Item {
                     schema::items::price_acc.nullable(),
                 ))
                 .load::<Store>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
           }
     }
 
@@ -1667,6 +1668,7 @@ impl Item {
             .distinct()
             .load::<i32>(&_connection)
             .expect("E.");
+        let count = item_ids.len();
         if is_admin {
             return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1682,7 +1684,7 @@ impl Item {
                     schema::items::title,
                 ))
                 .load::<Work>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
         } else {
             return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1699,7 +1701,7 @@ impl Item {
                     schema::items::title,
                 ))
                 .load::<Work>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
         }
     }
 
@@ -1769,6 +1771,7 @@ impl Item {
             .distinct()
             .load::<i32>(&_connection)
             .expect("E.");
+        let count = item_ids.len();
         if is_admin {
             return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1785,7 +1788,7 @@ impl Item {
                     schema::items::created
                 ))
                 .load::<Wiki>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
         } else {
             return (items
                 .filter(schema::items::id.eq_any(item_ids))
@@ -1803,7 +1806,7 @@ impl Item {
                     schema::items::created,
                 ))
                 .load::<Wiki>(&_connection)
-                .expect("E."), item_ids.len());
+                .expect("E."), count);
         }
     }
 

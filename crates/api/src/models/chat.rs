@@ -80,6 +80,7 @@ impl Message {
                 12 => videos.push(file.clone()),
                 13 => audios.push(file.clone()),
                 14 => docs.push(file.clone()),
+                _ => todo!(),
             };
         }
         return (photos, videos, audios, docs);
