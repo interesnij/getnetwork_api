@@ -1,10 +1,8 @@
 use actix_web::{
     HttpRequest,
-    HttpResponse,
     web,
-    web::{block, Data, Json},
+    web::Json,
 };
-use crate::models::User;
 use std::borrow::BorrowMut;
 use crate::diesel::{
     RunQueryDsl,
@@ -29,6 +27,7 @@ use actix_multipart::{Field, Multipart};
 use futures::StreamExt;
 use serde::{Deserialize, Serialize};
 use std::str;
+use crate::errors::Error;
 
 
 pub fn serve_routes(config: &mut web::ServiceConfig) {
@@ -780,7 +779,6 @@ pub async fn serve_split_payload(payload: &mut Multipart) -> ServeForm {
 }
 
 pub async fn create_serve(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
-    use crate::utils::serve_category_form;
     use crate::schema::serve_categories::dsl::serve_categories;
 
     let _request_user = get_request_user(&req, 3).await;
