@@ -14,7 +14,7 @@ pub struct Feedback {
     pub message:  String,
 }
 impl Feedback {
-    pub fn get_list(page: i32, limit: i32) -> Result<(Vec<Feedback>, i32), Error> {
+    pub fn get_list(page: i32, limit: i32) -> Result<(Vec<Feedback>, i16), Error> {
         use crate::schema::feedbacks::dsl::feedbacks;
         let mut next_page_number = 0;
         let have_next: i32;
@@ -31,20 +31,20 @@ impl Feedback {
         } 
         else {
             have_next = limit + 1;
-            object_list = feedbacks
+            object_list = schema::feedbacks
                 .limit(limit.into())
                 .offset(0)
                 .load::<Feedback>(&_connection)
                 .expect("E");
         }
-        if feedbacks
+        if schema::feedbacks
             .offset(have_next.into())
             .select(schema::feedbacks::id)
             .first::<i32>(&_connection)
             .is_ok() {
                 next_page_number = page + 1;
         }
-        let _tuple = (object_list, next_page_number);
+        let _tuple = (object_list, next_page_number as i16););
         Ok(_tuple)
     }
 }

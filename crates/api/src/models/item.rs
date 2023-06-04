@@ -526,7 +526,7 @@ impl Categories {
         if Categories::get_blogs(cat_id, 1, have_next.into(), is_admin)?.len() > 0 {
             next_page_number = page + 1;
         }
-        let _tuple = (object_list, next_page_number);
+        let _tuple = (object_list, next_page_number as i16);
         Ok(_tuple)
     }
     pub fn get_blogs (
@@ -1914,7 +1914,7 @@ impl Item {
         if Item::get_blogs_for_ids(1, have_next.into(), &ids, is_admin).len() > 0 {
             next_page_number = page + 1;
         }
-        return (object_list, next_page_number);
+        return (object_list, next_page_number as i16);
     }
 
     pub fn get_blogs_for_ids (
@@ -1987,7 +1987,7 @@ impl Item {
         if Item::get_services_for_ids(1, have_next.into(), &ids, is_admin).len() > 0 {
             next_page_number = page + 1;
         }
-        return (object_list, next_page_number);
+        return (object_list, next_page_number as i16);
     }
 
     pub fn get_services_for_ids (
@@ -2058,7 +2058,7 @@ impl Item {
         if Item::get_stores_for_ids(1, have_next.into(), &ids, is_admin).len() > 0 {
             next_page_number = page + 1;
         }
-        return (object_list, next_page_number);
+        return (object_list, next_page_number as i16);
     }
 
     pub fn get_stores_for_ids (
@@ -2133,7 +2133,7 @@ impl Item {
         if Item::get_wikis_for_ids(1, have_next.into(), &ids, is_admin).len() > 0 {
             next_page_number = page + 1;
         }
-        return (object_list, next_page_number);
+        return (object_list, next_page_number as i16);
     }
 
     pub fn get_wikis_for_ids (
@@ -2277,7 +2277,7 @@ impl Item {
         if Item::get_helps_for_ids(1, have_next.into(), &ids, is_admin).len() > 0 {
             next_page_number = page + 1;
         }
-        return (object_list, next_page_number);
+        return (object_list, next_page_number as i16);
     }
 
     pub fn get_helps_for_ids (

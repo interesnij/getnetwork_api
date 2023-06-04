@@ -32,7 +32,7 @@ pub struct Order {
 }
 
 impl Order {
-    pub fn get_orders_list(page: i32, limit: i32) -> (Vec<Order>, i32) {
+    pub fn get_orders_list(page: i32, limit: i32) -> (Vec<Order>, i16) {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Order>;
@@ -50,7 +50,7 @@ impl Order {
             next_page_number = page + 1;
         }
 
-        return (object_list, next_page_number);
+        return (object_list, next_page_number as i16);
     }
     pub fn get_orders(limit: i64, offset: i64) -> Vec<Order> {
         use crate::schema::orders::dsl::orders;
@@ -63,7 +63,7 @@ impl Order {
             .load::<Order>(&_connection)
             .expect("E.");
     }
-    pub fn get_user_orders_list(user_id: i32, page: i32, limit: i32) -> (Vec<Order>, i32) {
+    pub fn get_user_orders_list(user_id: i32, page: i32, limit: i32) -> (Vec<Order>, i16) {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Order>;
@@ -81,7 +81,7 @@ impl Order {
             next_page_number = page + 1;
         }
 
-        return (object_list, next_page_number);
+        return (object_list, next_page_number as i16);
     }
     pub fn get_user_orders(user_id: i32, limit: i64, offset: i64) -> Vec<Order> {
         use crate::schema::orders::dsl::orders;

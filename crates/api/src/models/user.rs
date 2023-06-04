@@ -112,7 +112,7 @@ pub struct CookieUser {
     pub created:    chrono::NaiveDateTime,
 }
 impl CookieUser {
-    pub fn get_users_list(page: i32, limit: i32) -> (Vec<CookieUser>, i32) {
+    pub fn get_users_list(page: i32, limit: i32) -> (Vec<CookieUser>, i16) {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<CookieUser>;
@@ -130,7 +130,7 @@ impl CookieUser {
             next_page_number = page + 1;
         }
 
-        return (object_list, next_page_number);
+        return (object_list, next_page_number as i16);
     }
     pub fn get_users(limit: i64, offset: i64) -> Vec<CookieUser> {
         use crate::schema::cookie_users::dsl::cookie_users;
@@ -252,7 +252,7 @@ pub struct HistoryResponse {
 }
 
 impl CookieStat {
-    pub fn get_stat_list(user_id: i32, page: i32, limit: i32) -> Result<(Vec<CookieStat>, i32), Error> {
+    pub fn get_stat_list(user_id: i32, page: i32, limit: i32) -> Result<(Vec<CookieStat>, i16), Error> {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<CookieStat>;
@@ -269,7 +269,7 @@ impl CookieStat {
         if CookieStat::get_stat_items(user_id, 1, have_next.into())?.len() > 0 {
             next_page_number = page + 1;
         }
-        let _tuple = (object_list, next_page_number);
+        let _tuple = (object_list, next_page_number as i16);
         Ok(_tuple)
     }
     pub fn get_stat_items(user_id: i32, limit: i64, offset: i64) -> Result<Vec<CookieStat>, Error> {
