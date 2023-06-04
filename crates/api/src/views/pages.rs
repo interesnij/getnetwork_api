@@ -888,14 +888,14 @@ pub struct ItemResp {
 }
 #[derive(Serialize)]
 pub struct CatDataResp {
-    pub category:    Cat,
+    pub category:    &Cat,
     pub object_list: Vec<ItemResp>,
 } 
 
 #[derive(Serialize)]
 pub struct CategoriesPageResp {
     pub request_user: UserResp,
-    pub categories:   Vec<&CatDataResp>,
+    pub categories:   Vec<CatDataResp>,
     pub cats:         Vec<Cat>,
     pub all_tags:     Vec<SmallTag>,
     pub view:         i32,
