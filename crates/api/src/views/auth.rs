@@ -43,14 +43,14 @@ pub struct IncommingUserResp<'a> {
     pub image:      Option<String>,
     pub perm:       i16,
     pub device:     bool,
-    pub categories: (Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>),
+    pub categories: (Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>, Vec<&'a Cat>),
 }
 
 pub async fn login (
     req: HttpRequest,
     data: Json<LoginUser2>,
     state: web::Data<AppState>
-) -> Result<Json<IncommingUserResp>, Error> { 
+) -> Result<Json<IncommingUserResp<'static>>, Error> { 
     let _user = User::get_user_by_name(&data.username.as_deref().unwrap().to_string());
     
     if get_request_user_id(&req).await != 0 {
