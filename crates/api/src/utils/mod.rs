@@ -230,12 +230,12 @@ pub fn get_price_acc_values(price: &i32) -> Option<i32> {
 
             for cat in _cats.iter() {
                 match cat.types {
-                    1 => _blog_cats.push(cat),
-                    2 => _service_cats.push(cat),
-                    3 => _store_cats.push(cat),
-                    4 => _wiki_cats.push(cat),
-                    5 => _work_cats.push(cat),
-                    6 => _help_cats.push(cat),
+                    1 => _blog_cats.push(cat.clone()),
+                    2 => _service_cats.push(cat.clone()),
+                    3 => _store_cats.push(cat.clone()),
+                    4 => _wiki_cats.push(cat.clone()),
+                    5 => _work_cats.push(cat.clone()),
+                    6 => _help_cats.push(cat.clone()),
                 };
             }
 
