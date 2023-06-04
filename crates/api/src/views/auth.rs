@@ -85,14 +85,14 @@ pub async fn login (
     else {
         let _user = _user.expect("E.");
 
-        if verify(data.password.as_str(), _user.password.as_str()).unwrap() {
+        if verify(data.password.as_deref().unwrap(), _user.password.as_deref().unwrap()).unwrap() {
                 let token = gen_jwt(_user.id, state.key.as_ref()).await;
                 
                 match token {
                     Ok(token_str) => {
                         Ok(Json(IncommingUserResp {
                             token:      token_str,
-                            username:   _user.username.as_deref().unwrap().to_string(),
+                            username:   _user.username.clone(),
                             image:      _user.image.clone(),
                             perm:       _user.perm,
                             device:     is_desctop(&req),

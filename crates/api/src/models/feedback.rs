@@ -52,6 +52,7 @@ impl Feedback {
 #[derive(Debug, Deserialize, Insertable)]
 #[table_name="feedbacks"]
 pub struct NewFeedback {
+    pub user_id:  i32,
     pub username: String,
     pub email:    String,
     pub message:  String,

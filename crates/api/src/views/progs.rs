@@ -160,6 +160,7 @@ pub struct HistoryData {
     pub template:  String,
 }
 pub async fn create_history (
+    conn: ConnectionInfo,
     data: Json<HistoryData>,
     req: HttpRequest,
 ) -> Result<Json<CookieStat>, Error> {
@@ -175,7 +176,7 @@ pub async fn create_history (
     let _connection = establish_connection();
 
     let p_id = data.user_id;
-    let user = get_c_user(_connection, p_id, &req).await;
+    let user = get_c_user(conn, p_id, &req).await;
 
     let p_object_id = data.object_id;
     let p_page_id = data.page_id;
