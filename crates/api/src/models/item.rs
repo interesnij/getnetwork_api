@@ -1897,7 +1897,7 @@ impl Item {
         limit: i32,
         ids:   &Vec<i32>,
         is_admin: bool
-    ) -> (Vec<Blog>, i32) {
+    ) -> (Vec<Blog>, i16) {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Blog>;
@@ -1970,7 +1970,7 @@ impl Item {
         limit: i32,
         ids:   &Vec<i32>,
         is_admin: bool
-    ) -> (Vec<Service>, i32) {
+    ) -> (Vec<Service>, i16) {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Service>;
@@ -2041,7 +2041,7 @@ impl Item {
         limit: i32,
         ids:   &Vec<i32>,
         is_admin: bool
-    ) -> (Vec<Store>, i32) {
+    ) -> (Vec<Store>, i16) {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Store>;
@@ -2116,7 +2116,7 @@ impl Item {
         limit: i32,
         ids:   &Vec<i32>,
         is_admin: bool
-    ) -> (Vec<Wiki>, i32) {
+    ) -> (Vec<Wiki>, i16) {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Wiki>;
@@ -2189,7 +2189,7 @@ impl Item {
         limit: i32,
         ids:   &Vec<i32>,
         is_admin: bool
-    ) -> (Vec<Work>, i32) {
+    ) -> (Vec<Work>, i16) {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Work>;
@@ -2260,7 +2260,7 @@ impl Item {
         limit: i32,
         ids:   &Vec<i32>,
         is_admin: bool
-    ) -> (Vec<Help>, i32) {
+    ) -> (Vec<Help>, i16) {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Help>;
