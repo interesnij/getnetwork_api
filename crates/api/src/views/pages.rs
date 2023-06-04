@@ -1253,9 +1253,7 @@ async fn item_categories_page (
     let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
     let is_superuser = _request_user.perm == 60;
 
-    let cats_res = block(move || Categories::get_categories_for_types(types)).await?;
-    _cats = block(move || Categories::get_categories_for_types(types)).await.expect("R.");
-
+    let _cats = Categories::get_categories_for_types(types).expect("R.");
     let tags_res = block(move || Categories::get_tags(types)).await?;
     _tags = match tags_res {
         Ok(_list) => _list,
