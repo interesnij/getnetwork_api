@@ -509,7 +509,7 @@ impl Categories {
         page:     i32,
         limit:    i32,
         is_admin: bool
-    ) -> Result<(Vec<Blog>, i32), Error> {
+    ) -> Result<(Vec<Blog>, i16), Error> {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Blog>;
@@ -591,7 +591,7 @@ impl Categories {
         page:     i32,
         limit:    i32,
         is_admin: bool
-    ) -> Result<(Vec<Service>, i32), Error> {
+    ) -> Result<(Vec<Service>, i16), Error> {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Service>;
@@ -672,7 +672,7 @@ impl Categories {
         page:     i32,
         limit:    i32,
         is_admin: bool
-    ) -> Result<(Vec<Store>, i32), Error> {
+    ) -> Result<(Vec<Store>, i16), Error> {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Store>;
@@ -757,7 +757,7 @@ impl Categories {
         page:     i32,
         limit:    i32,
         is_admin: bool
-    ) -> Result<(Vec<Wiki>, i32), Error> {
+    ) -> Result<(Vec<Wiki>, i16), Error> {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Wiki>;
@@ -840,7 +840,7 @@ impl Categories {
         page:     i32,
         limit:    i32,
         is_admin: bool
-    ) -> Result<(Vec<Work>, i32), Error> {
+    ) -> Result<(Vec<Work>, i16), Error> {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Work>;
@@ -921,7 +921,7 @@ impl Categories {
         page:     i32,
         limit:    i32,
         is_admin: bool
-    ) -> Result<(Vec<Help>, i32), Error> {
+    ) -> Result<(Vec<Help>, i16), Error> {
         let mut next_page_number = 0;
         let have_next: i32;
         let object_list: Vec<Help>;

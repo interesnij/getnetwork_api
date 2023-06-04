@@ -383,7 +383,7 @@ pub async fn cookie_users_list_page(req: HttpRequest) -> Result<Json<CookieUsers
 #[derive(Serialize)]
 pub struct UserHistoryResp {
     pub request_user:     UserResp,
-    pub object_list:      Vec<CookieUser>,
+    pub object_list:      Vec<CookieStat>,
     pub next_page_number: i16,
 }
 #[derive(Deserialize)]
@@ -416,8 +416,6 @@ pub async fn get_user_history_page(req: HttpRequest) -> Result<Json<UserHistoryR
         }).unwrap();
         return Err(Error::BadRequest(body));
     }
-
-    use crate::models::CookieStat;
 
     let object_list: Vec<CookieStat>;
     let next_page_number: i16;
