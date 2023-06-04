@@ -108,7 +108,7 @@ pub async fn create_tag(req: HttpRequest, mut payload: Multipart) -> Result<Json
         .execute(&_connection)
         .expect("E.");
 
-    return Json(1);
+    return Ok(Json(1)); 
 }
 
 #[derive(Deserialize)]

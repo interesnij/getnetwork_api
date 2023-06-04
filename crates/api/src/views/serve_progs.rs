@@ -515,7 +515,7 @@ pub async fn create_tech_categories(req: HttpRequest, mut payload: Multipart) ->
         .execute(&_connection)
         .expect("E.");
     
-    return Json(1);
+    return Ok(Json(1));
 }
 
 
@@ -558,7 +558,7 @@ pub async fn create_serve_categories(req: HttpRequest, mut payload: Multipart) -
         .execute(&_connection)
         .expect("E.");
     
-    return Json(1);
+    return Ok(Json(1));
 }
 
 pub async fn edit_tech_category(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
@@ -611,7 +611,7 @@ pub async fn edit_tech_category(req: HttpRequest, mut payload: Multipart) -> Res
         .execute(&_connection)
         .expect("E");
 
-    return Json(1);
+    return Ok(Json(1));
 }
 
 pub async fn edit_serve_category(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
@@ -663,7 +663,7 @@ pub async fn edit_serve_category(req: HttpRequest, mut payload: Multipart) -> Re
         .execute(&_connection)
         .expect("E");
 
-    return Json(1);
+    return Ok(Json(1));
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -845,7 +845,7 @@ pub async fn create_serve(req: HttpRequest, mut payload: Multipart) -> Result<Js
         .execute(&_connection)
         .expect("E.");
         
-    return Json(1);
+    return Ok(Json(1));
 }
 
 pub async fn edit_serve(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
@@ -929,7 +929,7 @@ pub async fn edit_serve(req: HttpRequest, mut payload: Multipart) -> Result<Json
         .execute(&_connection)
         .expect("E");
 
-    return Json(1);
+    return Ok(Json(1));
 }
 
 #[derive(Deserialize)]

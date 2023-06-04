@@ -316,7 +316,8 @@ pub async fn create_feedback(conn: ConnectionInfo, mut payload: actix_multipart:
         .values(&new_feedback)
         .execute(&_connection)
         .expect("E.");
-    return Json(1);
+    
+    return Ok(Json(1));
 }
 
 
@@ -450,7 +451,7 @@ pub async fn create_item(mut payload: Multipart) -> Result<Json<i16>, Error> {
         .execute(&_connection)
         .expect("Error.");
 
-    return Json(1);
+    return Ok(Json(1));
 }
 
 pub async fn edit_item(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
@@ -683,7 +684,7 @@ pub async fn edit_item(req: HttpRequest, mut payload: Multipart) -> Result<Json<
         .execute(&_connection)
         .expect("Error.");
 
-    return Json(1);
+    return Ok(Json(1));
 }
 
 
@@ -725,7 +726,7 @@ pub async fn create_category(req: HttpRequest, mut payload: Multipart) -> Result
         .execute(&_connection)
         .expect("E.");
 
-    return Json(1);
+    return Ok(Json(1));
 }
 
 pub async fn edit_category(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
@@ -773,7 +774,7 @@ pub async fn edit_category(req: HttpRequest, mut payload: Multipart) -> Result<J
             .expect("E");
     }
 
-    return Json(1);
+    return Ok(Json(1));
 }
 
 #[derive(Deserialize)]
@@ -874,7 +875,7 @@ pub async fn delete_item(req: HttpRequest, data: Json<DeleteItemData>) -> Result
             .expect("Error.");
     };
     
-    return Json(1);
+    return Ok(Json(1));
 }
 
 
@@ -919,7 +920,7 @@ pub async fn delete_category(req: HttpRequest, data: Json<DeleteItemData>) -> Re
         .execute(&_connection)
         .expect("E");
     
-    return Json(1);
+    return Ok(Json(1));
 }
 
 pub async fn create_files(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
@@ -980,7 +981,7 @@ pub async fn create_files(req: HttpRequest, mut payload: Multipart) -> Result<Js
             .execute(&_connection)
             .expect("E.");
     };
-    return Json(1);
+    return Ok(Json(1));
 }
 
 pub async fn edit_file(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
@@ -1030,7 +1031,7 @@ pub async fn edit_file(req: HttpRequest, mut payload: Multipart) -> Result<Json<
         .execute(&_connection)
         .expect("E");
     
-    return Json(1);
+    return Ok(Json(1));
 }
 
 pub async fn delete_file(req: HttpRequest, data: Json<DeleteItemData>) -> Result<Json<i16>, Error> {
@@ -1079,7 +1080,7 @@ pub async fn delete_file(req: HttpRequest, data: Json<DeleteItemData>) -> Result
         .execute(&_connection)
         .expect("E");
 
-    return Json(1);
+    return Ok(Json(1));
 }
 
 pub async fn publish_item(req: HttpRequest, data: Json<DeleteItemData>) -> Result<Json<i16>, Error> {
@@ -1148,7 +1149,7 @@ pub async fn publish_item(req: HttpRequest, data: Json<DeleteItemData>) -> Resul
             .expect("Error.");
     }
 
-    return Json(1);
+    return Ok(Json(1));
 }
 
 pub async fn hide_item(req: HttpRequest, data: Json<DeleteItemData>) -> Result<Json<i16>, Error> {
@@ -1217,5 +1218,5 @@ pub async fn hide_item(req: HttpRequest, data: Json<DeleteItemData>) -> Result<J
             .expect("Error.");
     }
 
-    return Json(1);
+    return Ok(Json(1));
 }

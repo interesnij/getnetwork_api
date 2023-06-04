@@ -314,7 +314,7 @@ pub async fn delete_order(req: HttpRequest, data: Json<DeleteOrderData>) -> Resu
             .expect("E");
         diesel::delete(&_order).execute(&_connection).expect("E");
 
-        return Json(1);
+        return Ok(Json(1));
     }
     else {
         let body = serde_json::to_string(&ErrorParams {
