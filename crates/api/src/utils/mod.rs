@@ -161,7 +161,7 @@ pub async fn get_request_user(req: &HttpRequest, is_ajax: i16) -> UserResp {
             .first::<User>(&_connection)
             .expect("E");
         
-        User::create_superuser(user_id);
+        //User::create_superuser(user_id);
         return UserResp {
             id:         user.id,
             username:   user.username.clone(),
@@ -281,29 +281,6 @@ pub async fn get_cookie_user_id(req: &HttpRequest) -> i32 {
         }
     }
     return 0;
-}
-
-
-pub fn get_page(req: &HttpRequest) -> i32 {
-    #[derive(Debug, Deserialize)]
-    struct Params {
-        pub page: Option<i32>,
-    }
-    let params_some = web::Query::<Params>::from_query(&req.query_string());
-    let page: i32;
-    if params_some.is_ok() {
-        let params = params_some.unwrap();
-        if params.page.is_some() {
-            page = params.page.unwrap();
-        }
-        else {
-            page = 1;
-        }
-    }
-    else {
-        page = 1;
-    }
-    page
 }
 
 pub fn get_is_ajax(req: &HttpRequest) -> i16 {

@@ -10,7 +10,6 @@ pub mod schema;
 pub mod models;
 pub mod routes;
 mod errors;
-mod vars;
 
 use actix_web::{
     HttpServer,
@@ -51,7 +50,7 @@ async fn main() -> std::io::Result<()> {
     })
 
     //.bind("176.99.2.88:9090")?   // порт для разработки
-    .bind("151.248.120.218:9091")? // порт для автоматической доставки
+    .bind("176.99.2.88:9091")? // порт для автоматической доставки
     .run()
     .await
 }
