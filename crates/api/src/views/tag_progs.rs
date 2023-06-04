@@ -115,7 +115,7 @@ pub async fn create_tag(req: HttpRequest, mut payload: Multipart) -> Result<Json
 pub struct TagPageData {
     pub slug:    Option<String>,
     pub is_ajax: Option<i16>,
-    pub page:    Option<i16>,
+    pub page:    Option<i32>,
 }
 #[derive(Serialize)]
 pub struct TagPageResp {
