@@ -38,12 +38,10 @@ impl Feedback {
                 .expect("E");
         }
         if feedbacks
-            .limit(1) 
             .offset(have_next.into())
             .select(schema::feedbacks::id)
-            .load::<i32>(&_connection)
-            .expect("E")
-            .len() > 0 {
+            .first::<i32>(&_connection)
+            .is_ok() {
                 next_page_number = page + 1;
         }
         let _tuple = (object_list, next_page_number);

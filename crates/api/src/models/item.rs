@@ -2206,7 +2206,7 @@ impl Item {
         if Item::get_works_for_ids(1, have_next.into(), &ids, is_admin).len() > 0 {
             next_page_number = page + 1;
         }
-        return (object_list, next_page_number);
+        return (object_list, next_page_number as i16);
     }
 
     pub fn get_works_for_ids (
