@@ -175,11 +175,13 @@ pub async fn process_signup (
             .get_result::<User>(&_connection)
             .expect("Error saving user.");
             
-        let token = gen_jwt(_new_user.id, state.key.as_ref()).await;
+        let token = gen_jwt(_new_user.id, state.key.as_ref())
+            .await
+            .expect("Error token");
         Ok(Json(IncommingUserResp {
             token:      token,
             username:   _new_user.username,
-            image:      "".to_string(),
+            image:      None,
             perm:       0,
             device:     is_desctop(&req),
             categories: get_categories_2(0),
