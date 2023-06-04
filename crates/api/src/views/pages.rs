@@ -464,7 +464,7 @@ pub async fn get_tech_objects_page(req: HttpRequest) -> Result<Json<TechObjectsR
     use crate::models::TechCategories;
     use crate::schema::tech_categories::dsl::tech_categories;
 
-    let _request_user = get_request_user(&req, 2).await;
+    let is_admin = get_request_user(&req, 2).await.perm > 59;
     let _connection = establish_connection();
     let _cat = tech_categories
         .filter(schema::tech_categories::id.eq(params.id.unwrap()))
@@ -531,7 +531,7 @@ pub async fn unical_object_form_page(req: HttpRequest) -> Result<Json<UnicalObje
 #[derive(Serialize)]
 pub struct CreateCategoryResp {
     pub request_user: UserResp,
-    pub cats:         Vec<Cat>,
+    pub cats:         Vec<Categories>,
 }
 pub async fn create_category_page(req: HttpRequest) -> Result<Json<CreateCategoryResp>, Error> {
     let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
@@ -602,10 +602,10 @@ pub async fn edit_category_page(req: HttpRequest) -> Result<Json<EditCategoryRes
     let _cats = schema::categories::table
         .load::<Categories>(&_connection)
         .expect("E");
-    let _cat = _cats
-        .iter()
-        .position(|&r| r.id == params.id.unwrap())
-        .unwrap();
+    let _cat = schema::categories::table
+        .filter(schema::categories::id.eq(params.id.unwrap()))
+        .load::<Categories>(&_connection)
+        .expect("E");
 
     return Ok(Json(EditCategoryResp {
         request_user: _request_user,
@@ -643,7 +643,7 @@ pub async fn create_item_page(req: HttpRequest) -> Result<Json<CreateItemResp>, 
 #[derive(Serialize)]
 pub struct EditItemResp {
     pub request_user: UserResp,
-    pub cat:          Categories,
+    pub object:       Item,
     pub cats:         Vec<Categories>,
 }
 #[derive(Deserialize)]
@@ -688,14 +688,14 @@ pub async fn edit_item_page(req: HttpRequest) -> Result<Json<EditItemResp>, Erro
     let _cats = schema::categories::table
         .load::<Categories>(&_connection)
         .expect("E");
-    let _cat = _cats
-        .iter()
-        .position(|&r| r.id == params.id.unwrap())
-        .unwrap();
+    let object = schema::items::table
+        .filter(schema::items::id.eq(params.id.unwrap()))
+        .load::<Item>(&_connection)
+        .expect("E");
 
-    return Ok(Json(EditCategoryResp {
+    return Ok(Json(EditItemResp {
         request_user: _request_user,
-        cat:          _cat,
+        object:       object,
         cats:         _cats,
     }));
 }
@@ -858,7 +858,7 @@ pub struct ItemServeResp {
 pub struct ObjectPageResp {
     pub request_user: UserResp,
     pub object:       ItemDetailResp,
-    pub category:     Categories,
+    pub category:     Cat,
     pub cats:         Vec<Cat>,
     pub all_tags:     Vec<SmallTag>,
     pub prev:         Option<FeaturedItem>,
@@ -1054,15 +1054,17 @@ async fn get_item_page (
 
     let (prev, next) = _category.get_featured_items(_item.types, _item.id);
 
+
     let cat_data = Cat {
         name:  _category.name.clone(),
         slug:  _category.slug.clone(),
         count: _category.count,
         id:    _category.id,
         image: Some(_category.get_image()),
+        types: _category.types,
     };
 
-    return Json(ObjectPageResp {
+    return Ok(Json(ObjectPageResp {
         request_user: get_request_user(&req, is_ajax).await,
         object:       get_item_data(_item, _request_user.perm),
         category:     cat_data,
@@ -1070,7 +1072,7 @@ async fn get_item_page (
         all_tags:     _tags,
         prev:         prev,
         next:         next,
-    });
+    }));
 }
 
 pub async fn get_blog_page(req: HttpRequest) -> Result<Json<ObjectPageResp>, Error> {
@@ -1197,14 +1199,14 @@ async fn item_category_page (
         Ok(_ok) => {object_list = _ok.0; next_page_number = _ok.1},
         Err(_error) => {object_list = Vec::new(); next_page_number = 0},
     };
-    return CategoryPageResp {
+    return Ok(Json(CategoryPageResp {
         request_user:     _request_user,
         category:         _category,
         cats:             _cats,
         all_tags:         _tags,
         object_list:      object_list,
         next_page_number: next_page_number,
-    };
+    }));
 }
 
 pub async fn blog_category_page(req: HttpRequest) -> Result<Json<CategoryPageResp>, Error> {
@@ -1272,14 +1274,14 @@ async fn item_categories_page (
                 id:          i.id,
                 slug:        i.slug.clone(),
                 title:       i.title.clone(),
-                description: i.slug.clone(),
+                description: i.description.clone(),
                 created:     i.created.format("%d-%m-%Y в %H:%M").to_string(),
                 price:       i.price,
                 price_acc:   i.price_acc,
                 image:       i.get_image(),
             });
             categories.push( CatDataResp {
-                category:    cat,
+                category:    &cat,
                 object_list: stack,
 
             });

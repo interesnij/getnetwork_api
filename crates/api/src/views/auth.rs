@@ -55,8 +55,8 @@ pub async fn login (
     req: HttpRequest,
     data: Json<LoginUser2>,
     state: web::Data<AppState>
-) -> Result<Json<IncommingUserResp>, Error> {
-    let _user = User::get_user_by_name(&data.username);
+) -> Result<Json<IncommingUserResp>, Error> { 
+    let _user = User::get_user_by_name(&data.username.as_deref().unwrap());
     
     if get_request_user_id(&req).await != 0 {
         let body = serde_json::to_string(&ErrorParams {
@@ -85,7 +85,7 @@ pub async fn login (
     else {
         let _user = _user.expect("E.");
 
-        if verify(data.password.as_deref().unwrap(), _user.password.as_deref().unwrap()).unwrap() {
+        if verify(data.password.as_deref().unwrap(), _user.password).unwrap() {
                 let token = gen_jwt(_user.id, state.key.as_ref()).await;
                 
                 match token {

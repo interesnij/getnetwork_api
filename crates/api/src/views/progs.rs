@@ -164,7 +164,7 @@ pub async fn create_history (
     data: Json<HistoryData>,
     req: HttpRequest,
 ) -> Result<Json<CookieStat>, Error> {
-    if data.token.as_deref().unwrap() != TOKEN {
+    if data.token != TOKEN.to_string() {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied.".to_string(),
         }).unwrap();
