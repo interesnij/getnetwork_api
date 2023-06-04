@@ -1267,7 +1267,7 @@ async fn item_categories_page (
     };
 
     let mut categories: Vec<CatDataResp> = Vec::new();
-    for cat in _cats.iter() {
+    for cat in &_cats.iter() {
         let mut stack = Vec::new();
         for i in cat.get_items_list(6, types, is_superuser).iter() {
             stack.push( ItemResp {
