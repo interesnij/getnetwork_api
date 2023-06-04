@@ -598,7 +598,7 @@ pub struct TagsPageResp {
     pub all_tags:         Vec<SmallTag>,
     pub tags_count:       usize,
     pub next_page_number: i32,
-    pub stat:             StatPage,
+    pub stat:             PageStatData,
 }
 pub async fn tags_page(req: HttpRequest) -> Result<Json<TagsPageResp>, Error> {
     let _stat = get_stat_page(1, 0);
@@ -671,7 +671,7 @@ pub async fn edit_tag_page(req: HttpRequest) -> Result<Json<EditTagResp>, Error>
 
 
 pub async fn edit_tag(req: HttpRequest, mut payload: Multipart) -> Result<Json<i16>, Error> {
-    let _request_user = get_request_user(&req, is_ajax).await;
+    let _request_user = get_request_user(&req, get_is_ajax(&req)).await;
     if _request_user.id < 1 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
