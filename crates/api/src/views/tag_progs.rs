@@ -51,7 +51,7 @@ pub fn tag_routes(config: &mut web::ServiceConfig) {
 
 #[derive(Serialize)]
 pub struct CreateTagPageResp {
-    pub request_user: User,
+    pub request_user: UserResp,
     pub all_tags:     Vec<Tag>,
 }
 pub async fn create_tag_page(req: HttpRequest) -> Result<Json<CreateTagPageResp>, Error> {
@@ -742,7 +742,6 @@ pub async fn delete_tag(req: HttpRequest, data: Json<DeleteItemData>) -> Result<
         }).unwrap();
         return Err(Error::BadRequest(body));
     }
-
 
     let _connection = establish_connection();
     let _tag = schema::tags::table

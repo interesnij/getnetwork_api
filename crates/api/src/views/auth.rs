@@ -37,15 +37,15 @@ pub async fn logout() -> HttpResponse {
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct LoginUser2 {
-    pub username: String,
-    pub password: String,
+    pub username: Option<String>,
+    pub password: Option<String>,
 }
 
 #[derive(Serialize)]
 pub struct IncommingUserResp {
-    pub taken:      String,
+    pub token:      String,
     pub username:   String,
-    pub image:      String,
+    pub image:      Option<String>,
     pub perm:       i16,
     pub device:     bool,
     pub categories: (Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>, Vec<&Cat>),
@@ -92,7 +92,7 @@ pub async fn login (
                     Ok(token_str) => {
                         Ok(Json(IncommingUserResp {
                             token:      token_str,
-                            username:   _user.username.clone(),
+                            username:   _user.username.as_deref().unwrap().to_string(),
                             image:      _user.image.clone(),
                             perm:       _user.perm,
                             device:     is_desctop(&req),
@@ -130,7 +130,7 @@ pub async fn process_signup (
     state: web::Data<AppState>,
     data:  Json<NewUserForm>
 ) -> Result<Json<IncommingUserResp>, Error> {
-    if data.token.as_deref().unwrap() != TOKEN || get_request_user_id(&req) != 0 {
+    if data.token.as_deref().unwrap() != TOKEN || get_request_user_id(&req).await != 0 {
         let body = serde_json::to_string(&ErrorParams {
             error: "Permission Denied".to_string(),
         }).unwrap();
